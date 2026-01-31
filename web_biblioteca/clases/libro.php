@@ -1,7 +1,7 @@
 <?php
 
 class Libro {
-	public $ID;
+	public $id;
 	public $titulo;
 	public $autor_id;
 	public $genero;

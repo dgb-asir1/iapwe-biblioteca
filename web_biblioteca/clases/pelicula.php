@@ -1,7 +1,7 @@
 <?php
 
 class Pelicula {
-	public $ID;
+	public $id;
 	public $titulo;
 	public $año_estreno;
 	public $director;

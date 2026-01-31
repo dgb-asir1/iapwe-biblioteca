@@ -3,7 +3,7 @@
     require "config/conexion.php";
     require "clases/cliente.php";
 
-    $resultado = $conexion->query("SELECT * FROM clientes");
+    $resultado = $conexion->query("SELECT * FROM Clientes");
 
     $clientes = [];
 
