@@ -1,4 +1,4 @@
-﻿Id;Titulo;Autor_id;Genero;Editorial;Paginas;Año;Precio
+﻿id;titulo;autor_id;genero;editorial;paginas;año;precio
 1;El Señor de los anillos: La comunidad del anillo;1;Fantástico;Minotauro;488;1954-01-01;18.00
 2;El viejo y el mar;2;Novela;Debolsillo;208;1952-01-01;10.95
 3;Las Crónicas de Narnia: El león, la bruja y el armario;3;Fantástico;Destino;240;1950-01-01;15.00
