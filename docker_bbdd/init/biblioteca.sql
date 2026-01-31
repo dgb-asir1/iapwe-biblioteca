@@ -1,12 +1,14 @@
 USE `iapwe-biblioteca-bbdd`;
 
+-- CREAR TABLAS
+
 CREATE TABLE Clientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     apellidos VARCHAR(150) NOT NULL,
     fecha_nacimiento DATE,
     localidad VARCHAR(100)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE Autores (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -14,7 +16,7 @@ CREATE TABLE Autores (
     fecha_nacimiento DATE,
     lugar VARCHAR(100),
     fecha_defuncion DATE
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE Libros (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,7 +31,7 @@ CREATE TABLE Libros (
         FOREIGN KEY (autor_id) REFERENCES Autores(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE Peliculas (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -44,7 +46,7 @@ CREATE TABLE Peliculas (
         FOREIGN KEY (adaptacion_id) REFERENCES Libros(id)
         ON DELETE SET NULL
         ON UPDATE CASCADE
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE Reservas (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -59,16 +61,58 @@ CREATE TABLE Reservas (
         FOREIGN KEY (idLibro) REFERENCES Libros(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE Usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre_usuario VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(64) NOT NULL,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB;
 
-INSERT INTO Usuarios (nombre_usuario, password)
-VALUES (
-    'admin', SHA2('1234', 256)
-);
+
+-- IMPORTAR CSV
+
+LOAD DATA INFILE '/docker-entrypoint-initdb.d/Clientes.csv'
+INTO TABLE Clientes
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ';'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(id, nombre, apellidos, fecha_nacimiento, localidad);
+
+
+LOAD DATA INFILE '/docker-entrypoint-initdb.d/Autores.csv'
+INTO TABLE Autores
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ';'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(id, nombre, fecha_nacimiento, lugar, fecha_defuncion);
+
+
+LOAD DATA INFILE '/docker-entrypoint-initdb.d/Libros.csv'
+INTO TABLE Libros
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ';'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(id, titulo, autor_id, genero, editorial, paginas, anio, precio);
+
+LOAD DATA INFILE '/docker-entrypoint-initdb.d/Peliculas.csv'
+INTO TABLE Peliculas
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ';'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(id, titulo, anio_estreno, director, actores, genero, tipo_adaptacion, adaptacion_id);
+
+LOAD DATA INFILE '/docker-entrypoint-initdb.d/Reservas.csv'
+INTO TABLE Reservas
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ';'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(id, idCliente, idLibro, fecha_reserva);
+
+
