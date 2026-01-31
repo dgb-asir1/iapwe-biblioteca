@@ -1,0 +1,19 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: iapwe-biblioteca-bbdd
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootmysql
+      MYSQL_DATABASE: iapwe-biblioteca-bbdd
+      MYSQL_USER: damaso
+      MYSQL_PASSWORD: mastercaster
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+
+volumes:
+  mysql_data:

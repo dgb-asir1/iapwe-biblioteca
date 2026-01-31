@@ -1,0 +1,13 @@
+<?php
+
+class Libro {
+	public $ID;
+	public $titulo;
+	public $autor_id;
+	public $genero;
+	public $editorial;
+	public $paginas;
+	public $año;
+	public $precio;
+}
+?>

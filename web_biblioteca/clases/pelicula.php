@@ -1,0 +1,13 @@
+<?php
+
+class Pelicula {
+	public $ID;
+	public $titulo;
+	public $año_estreno;
+	public $director;
+	public $actores;
+	public $genero;
+	public $tipo_adaptacion;
+	public $adaptacion_id;
+}
+?>
