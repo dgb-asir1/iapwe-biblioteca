@@ -23,16 +23,20 @@ CREATE TABLE Libros (
     id INT NOT NULL,
     titulo VARCHAR(200),
     autor_id INT,
-    anyo INT,
+    categoria VARCHAR(100),
+    editorial VARCHAR(100),
+    paginas INT,
+    fecha_publicacion DATE,
+    precio DECIMAL(10,2),
     PRIMARY KEY (id),
     FOREIGN KEY (autor_id) REFERENCES Autores(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 CREATE TABLE Peliculas (
     id INT NOT NULL,
     titulo VARCHAR(200),
     director VARCHAR(100),
-    anyo INT,
+    fecha_publicacion INT,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -54,7 +58,6 @@ CREATE TABLE Usuarios (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-
 LOAD DATA INFILE '/var/lib/mysql-files/Clientes.csv'
 INTO TABLE Clientes
 CHARACTER SET utf8mb4
@@ -72,14 +75,12 @@ IGNORE 1 LINES
 (id, autor, fecha_nacimiento, lugar_nacimiento, @fecha_defuncion)
 SET fecha_defuncion = NULLIF(@fecha_defuncion, 'NULL');
 
-
 LOAD DATA INFILE '/var/lib/mysql-files/Libros.csv'
 INTO TABLE Libros
-CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ';'
 LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
-(id, titulo, autor_id, anyo);
+(id, titulo, autor_id, categoria, editorial, paginas, fecha_publicacion, precio);
 
 LOAD DATA INFILE '/var/lib/mysql-files/Peliculas.csv'
 INTO TABLE Peliculas
@@ -87,7 +88,7 @@ CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ';'
 LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
-(id, titulo, director, anyo);
+(id, titulo, director, fecha_publicacion);
 
 LOAD DATA INFILE '/var/lib/mysql-files/Reservas.csv'
 INTO TABLE Reservas
