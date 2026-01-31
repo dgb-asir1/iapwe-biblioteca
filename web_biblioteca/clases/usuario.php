@@ -1,9 +1,9 @@
 <?php
 
     class Usuario{
-        public $ID;
-        public $NAME;
-        public $PASSWORD;
+        public $id;
+        public $nombre_usuario;
+        public $password;
     }
 
 ?>
