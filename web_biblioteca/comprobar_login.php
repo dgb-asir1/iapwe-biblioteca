@@ -6,7 +6,7 @@
     $nombre_usuario = $_POST["nombre_usuario"];
     $password = $_POST["password"];
 
-    $consulta = "SELECT * FROM Usuarios WHERE nombre_usuario = ?";
+    $consulta = "SELECT * FROM Usuarios WHERE usuario = ?";
     $sentencia = $conexion->prepare($consulta);
     $sentencia->bind_param("s", $nombre_usuario);
     $sentencia->execute();
