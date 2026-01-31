@@ -8,12 +8,14 @@ services:
       MYSQL_DATABASE: iapwe-biblioteca-bbdd
       MYSQL_USER: damaso
       MYSQL_PASSWORD: mastercaster
+      MYSQL_LOCAL_INFILE: 1
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./init:/docker-entrypoint-initdb.d
-    command: --default-authentication-plugin=mysql_native_password
+      - ./init:/docker-entrypoint-initdb.d    # scripts SQL
+      - ./csv:/var/lib/mysql-files            # CSV accesibles para LOAD DATA INFILE
+    command: --default-authentication-plugin=mysql_native_password --local-infile=1
 
 volumes:
   mysql_data:

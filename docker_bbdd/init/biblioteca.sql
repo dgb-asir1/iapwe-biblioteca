@@ -1,118 +1,106 @@
 USE `iapwe-biblioteca-bbdd`;
 
--- CREAR TABLAS
 
 CREATE TABLE Clientes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    apellidos VARCHAR(150) NOT NULL,
+    id INT NOT NULL,
+    nombre VARCHAR(100),
+    apellidos VARCHAR(100),
     fecha_nacimiento DATE,
-    localidad VARCHAR(100)
-) ENGINE=InnoDB;
+    localidad VARCHAR(100),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE Autores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(150) NOT NULL,
+    id INT NOT NULL,
+    autor VARCHAR(100),
     fecha_nacimiento DATE,
-    lugar VARCHAR(100),
-    fecha_defuncion DATE
-) ENGINE=InnoDB;
+    lugar_nacimiento VARCHAR(100),
+    fecha_defuncion DATE,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE Libros (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(200) NOT NULL,
-    autor_id INT NOT NULL,
-    genero VARCHAR(100),
-    editorial VARCHAR(100),
-    paginas INT,
-    anio INT,
-    precio DECIMAL(6,2),
-    CONSTRAINT fk_libros_autor
-        FOREIGN KEY (autor_id) REFERENCES Autores(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-) ENGINE=InnoDB;
+    id INT NOT NULL,
+    titulo VARCHAR(200),
+    autor_id INT,
+    año INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (autor_id) REFERENCES Autores(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE Peliculas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(200) NOT NULL,
-    anio_estreno INT,
-    director VARCHAR(150),
-    actores TEXT,
-    genero VARCHAR(100),
-    tipo_adaptacion VARCHAR(100),
-    adaptacion_id INT,
-    CONSTRAINT fk_peliculas_libros
-        FOREIGN KEY (adaptacion_id) REFERENCES Libros(id)
-        ON DELETE SET NULL
-        ON UPDATE CASCADE
-) ENGINE=InnoDB;
+    id INT NOT NULL,
+    titulo VARCHAR(200),
+    director VARCHAR(100),
+    año INT,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE Reservas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    idCliente INT NOT NULL,
-    idLibro INT NOT NULL,
-    fecha_reserva DATE NOT NULL,
-    CONSTRAINT fk_reservas_cliente
-        FOREIGN KEY (idCliente) REFERENCES Clientes(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-    CONSTRAINT fk_reservas_libro
-        FOREIGN KEY (idLibro) REFERENCES Libros(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-) ENGINE=InnoDB;
+    id INT NOT NULL,
+    cliente_id INT,
+    libro_id INT,
+    fecha DATE,
+    PRIMARY KEY (id),
+    FOREIGN KEY (cliente_id) REFERENCES Clientes(id),
+    FOREIGN KEY (libro_id) REFERENCES Libros(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE Usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_usuario VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(64) NOT NULL,
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
+    id INT NOT NULL,
+    usuario VARCHAR(50),
+    password VARCHAR(255),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
--- IMPORTAR CSV
 
-LOAD DATA INFILE '/docker-entrypoint-initdb.d/Clientes.csv'
+LOAD DATA INFILE '/var/lib/mysql-files/Clientes.csv'
 INTO TABLE Clientes
 CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ';'
-LINES TERMINATED BY '\n'
+LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
 (id, nombre, apellidos, fecha_nacimiento, localidad);
 
-
-LOAD DATA INFILE '/docker-entrypoint-initdb.d/Autores.csv'
+LOAD DATA INFILE '/var/lib/mysql-files/Autores.csv'
 INTO TABLE Autores
 CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ';'
-LINES TERMINATED BY '\n'
+LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
-(id, nombre, fecha_nacimiento, lugar, fecha_defuncion);
+(id, autor, fecha_nacimiento, lugar_nacimiento, fecha_defuncion);
 
-
-LOAD DATA INFILE '/docker-entrypoint-initdb.d/Libros.csv'
+LOAD DATA INFILE '/var/lib/mysql-files/Libros.csv'
 INTO TABLE Libros
 CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ';'
-LINES TERMINATED BY '\n'
+LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
-(id, titulo, autor_id, genero, editorial, paginas, anio, precio);
+(id, titulo, autor_id, año);
 
-LOAD DATA INFILE '/docker-entrypoint-initdb.d/Peliculas.csv'
+LOAD DATA INFILE '/var/lib/mysql-files/Peliculas.csv'
 INTO TABLE Peliculas
 CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ';'
-LINES TERMINATED BY '\n'
+LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
-(id, titulo, anio_estreno, director, actores, genero, tipo_adaptacion, adaptacion_id);
+(id, titulo, director, año);
 
-LOAD DATA INFILE '/docker-entrypoint-initdb.d/Reservas.csv'
+LOAD DATA INFILE '/var/lib/mysql-files/Reservas.csv'
 INTO TABLE Reservas
 CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ';'
-LINES TERMINATED BY '\n'
+LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
-(id, idCliente, idLibro, fecha_reserva);
+(id, cliente_id, libro_id, fecha);
+
+LOAD DATA INFILE '/var/lib/mysql-files/Usuarios.csv'
+INTO TABLE Usuarios
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ';'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 LINES
+(id, usuario, password);
 
 
