@@ -35,10 +35,15 @@ CREATE TABLE Libros (
 CREATE TABLE Peliculas (
     id INT NOT NULL,
     titulo VARCHAR(200),
+    fecha_estreno DATE,
     director VARCHAR(100),
-    fecha_publicacion INT,
+    actores TEXT,
+    genero VARCHAR(50),
+    tipo_adaptacion VARCHAR(50),
+    adaptacion_id INT,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 CREATE TABLE Reservas (
     id INT NOT NULL,
@@ -88,7 +93,8 @@ CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ';'
 LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
-(id, titulo, director, fecha_publicacion);
+(id, titulo, fecha_estreno, director, actores, genero, tipo_adaptacion, @adaptacion_id)
+SET adaptacion_id = NULLIF(@adaptacion_id, '');
 
 LOAD DATA INFILE '/var/lib/mysql-files/Reservas.csv'
 INTO TABLE Reservas
@@ -104,6 +110,6 @@ CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ';'
 LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
-(id, usuario, password);
+(id, usuario, password, @nocargar, @nocargar);
 
 
