@@ -21,12 +21,9 @@
 
 
 
-<html>
-    <head>
-        <link rel="stylesheet" href="./css/styles.css">
-    </head>
-    <body>
-        <h1>CATÁLOGO</h1>
+<?php require('./componentes/header.php') ?>
+
+        <h2>CATÁLOGO</h2>
         <br>
         <ul>
 

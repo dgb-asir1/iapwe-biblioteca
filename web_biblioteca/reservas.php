@@ -20,15 +20,9 @@ while (true) {
 ?>
 
 
+<?php require('./componentes/header.php') ?>
 
-<html>
-
-<head>
-    <link rel="stylesheet" href="./css/styles.css">
-</head>
-
-<body>
-    <h1>RESERVAS</h1>
+    <h2>RESERVAS</h2>
     <br>
     <ul>
         <?php foreach ($reservas as $reserva): ?>

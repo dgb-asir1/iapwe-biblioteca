@@ -1,7 +1,7 @@
 <?php
 
-require "../config/conexion.php";
-require "../clases/cliente.php";
+require "./config/conexion.php";
+require "./clases/cliente.php";
 
 $resultado = $conexion->query("SELECT * FROM Clientes");
 
@@ -21,22 +21,18 @@ while (true) {
 
 
 
-<html>
+<?php require('./componentes/header.php') ?>
 
-<head>
-    <link rel="stylesheet" href="../css/styles.css">
-</head>
-
-<body>
-    <h1>LISTADO DE CLIENTES</h1>
+    <h2>LISTADO DE CLIENTES</h2>
+    <br>
     <ul>
 
         <?php foreach ($clientes as $cliente): ?>
 
             <li>
                 <?php echo $cliente->nombre . " " . $cliente->apellidos; ?>
-                <a href="editar.php?id=<?php echo $cliente->id ?>">Editar</a>
-                <a href="borrar.php?id=<?php echo $cliente->id ?>">Borrar</a>
+                <a href="clientes_editar.php?id=<?php echo $cliente->id ?>">Editar</a>
+                <a href="clientes_borrar.php?id=<?php echo $cliente->id ?>">Borrar</a>
             </li>
 
         <?php endforeach; ?>

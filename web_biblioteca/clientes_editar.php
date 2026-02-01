@@ -1,6 +1,6 @@
 <?php
 
-require "../config/conexion.php";
+require "./config/conexion.php";
 
 $id = $_GET["id"];
 
@@ -14,12 +14,10 @@ $cliente = $sentencia->get_result()->fetch_assoc();
 
 <html>
 
-<head>
-    <link rel="stylesheet" href="../css/styles.css">
-</head>
+<?php require('./componentes/header.php') ?>
 
-<body>
-    <h1>EDITAR CLIENTES</h1>
+    <h2>EDITAR CLIENTES</h2>
+    <br>
     <form action="actualizar.php" method="POST">
         <input type="hidden" name="id" value="<?php echo $cliente["id"]; ?>">
         <input type="text" name="nombre" value="<?php echo $cliente["nombre"]; ?>">

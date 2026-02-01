@@ -19,7 +19,7 @@
     $usuario = $resultado->fetch_object(Usuario::class);
 
     if($usuario != null && hash("sha256", $password) == $usuario->password){
-        header("Location: inicio.php");
+        header("Location: reservas.php");
     }else {
         //crear mensaje de error
         header("Location: index.php");

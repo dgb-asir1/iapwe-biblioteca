@@ -21,7 +21,7 @@ ul {
 }
 
 li {
-    margin: 1em;
+    margin: 1.5em;
 }
 
 a {
@@ -29,4 +29,10 @@ a {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     border: 1px solid blueviolet;
     border-radius: 0.3em;
+    padding: 0.5em;
+}
+
+a:hover {
+    background-color: chocolate;
+    color: blanchedalmond;
 }
