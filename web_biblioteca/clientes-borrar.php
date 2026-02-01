@@ -9,7 +9,7 @@
     $sentencia->bind_param("i", $id);
     $sentencia->execute();
 
-    header("Location: usuarios.php");
+    header("Location: clientes-listado.php");
 
 
 

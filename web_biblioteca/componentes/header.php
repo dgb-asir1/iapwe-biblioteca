@@ -7,5 +7,5 @@
     <nav>
         <a href="reservas.php">Reservas</a>        
         <a href="catalogo.php">Catálogo</a>
-        <a href="clientes_listado.php">Clientes</a>
+        <a href="clientes-listado.php">Clientes</a>
     </nav>

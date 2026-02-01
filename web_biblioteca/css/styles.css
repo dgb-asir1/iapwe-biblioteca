@@ -17,17 +17,46 @@ form {
 }
 
 ul {
-    border: 1px solid blueviolet;
+    max-width: 60%;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 0.3em;
 }
 
 li {
-    margin: 1.5em;
+    list-style: none;    
+    margin: 2em;
+
+    border-radius: 0.3em;    
+    box-shadow: 10px 5px 5px rgb(205, 205, 205);
+}
+
+.datos_cliente {
+    display: inline-block;
+    min-width: 80%;
+
+    padding: 1em 1em 1em 0em;
+}
+
+.id_cliente {
+    background-color: rgb(100, 97, 97);
+    color: antiquewhite;
+    min-width: 30%;
+    margin-left: 0em;
+    margin-right: 2em;
+    border-radius: 0.3em 0em 0em 0.3em;
+    padding: 1em;
+}
+
+.botones_li {
+    display: inline-block;
+    max-width: 15em;
+    padding: 1em;
 }
 
 a {
     text-decoration: none;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    border: 1px solid blueviolet;
+    border: 1px solid rgb(40, 10, 67);
     border-radius: 0.3em;
     padding: 0.5em;
 }
