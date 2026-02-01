@@ -17,7 +17,7 @@ form {
 }
 
 ul {
-    max-width: 60%;
+
     border: 1px solid rgb(0, 0, 0);
     border-radius: 0.3em;
 }
@@ -37,15 +37,7 @@ li {
     padding: 1em 1em 1em 0em;
 }
 
-.id_cliente {
-    background-color: rgb(100, 97, 97);
-    color: antiquewhite;
-    min-width: 30%;
-    margin-left: 0em;
-    margin-right: 2em;
-    border-radius: 0.3em 0em 0em 0.3em;
-    padding: 1em;
-}
+
 
 .botones_li {
     display: inline-block;

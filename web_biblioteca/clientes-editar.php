@@ -18,7 +18,7 @@ $cliente = $sentencia->get_result()->fetch_assoc();
 
     <h2>EDITAR CLIENTES</h2>
     <br>
-    <form action="actualizar.php" method="POST">
+    <form action="clientes-actualizar.php" method="POST">
         <input type="hidden" name="id" value="<?php echo $cliente["id"]; ?>">
         <input type="text" name="nombre" value="<?php echo $cliente["nombre"]; ?>">
         <input type="text" name="apellidos" value="<?php echo $cliente["apellidos"]; ?>">

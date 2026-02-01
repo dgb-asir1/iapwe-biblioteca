@@ -13,4 +13,4 @@ $sentencia = $conexion->prepare($consulta);
 $sentencia->bind_param("si", $nombre, $id);
 $sentencia->execute();
 
-header("Location: clientes.php");
+header("Location: clientes-listado.php");

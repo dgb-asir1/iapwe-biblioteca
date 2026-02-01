@@ -31,10 +31,9 @@ while (true) {
 
             <li>
                 <section class="datos_cliente">
-                    <span class="id_cliente">
-                        ID: <?php echo $cliente->id ?>
-                    </span>
-                    
+                    <span>
+                        <?php echo $cliente->id ?>
+                    </span>  
                     <?php echo $cliente->nombre . " " . $cliente->apellidos; ?>
                 </section>
                 <section class="botones_li">

@@ -4,7 +4,7 @@ class Pelicula
 {
 	public $id;
 	public $titulo;
-	public $año_estreno;
+	public $fecha_estreno;
 	public $director;
 	public $actores;
 	public $genero;
