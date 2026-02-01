@@ -1,6 +1,7 @@
 <?php
 
-class Pelicula {
+class Pelicula
+{
 	public $id;
 	public $titulo;
 	public $año_estreno;
@@ -10,4 +11,3 @@ class Pelicula {
 	public $tipo_adaptacion;
 	public $adaptacion_id;
 }
-?>

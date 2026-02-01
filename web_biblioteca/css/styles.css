@@ -1,14 +1,11 @@
 body {
     background-color: lavender;
     padding: 4em;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 h1 {
     font-family: 'Times New Roman', Times, serif;
-}
-
-h3 {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 form {
@@ -19,9 +16,17 @@ form {
     border-radius: 0.3em;
 }
 
+ul {
+    border: 1px solid blueviolet;
+}
+
+li {
+    margin: 1em;
+}
+
 a {
     text-decoration: none;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     border: 1px solid blueviolet;
-    padding: 1em;
     border-radius: 0.3em;
 }

@@ -23,7 +23,7 @@ CREATE TABLE Libros (
     id INT NOT NULL,
     titulo VARCHAR(200),
     autor_id INT,
-    categoria VARCHAR(100),
+    genero VARCHAR(100),
     editorial VARCHAR(100),
     paginas INT,
     fecha_publicacion DATE,
@@ -85,7 +85,7 @@ INTO TABLE Libros
 FIELDS TERMINATED BY ';'
 LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
-(id, titulo, autor_id, categoria, editorial, paginas, fecha_publicacion, precio);
+(id, titulo, autor_id, genero, editorial, paginas, fecha_publicacion, precio);
 
 LOAD DATA INFILE '/var/lib/mysql-files/Peliculas.csv'
 INTO TABLE Peliculas

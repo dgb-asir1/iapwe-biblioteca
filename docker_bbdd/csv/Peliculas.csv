@@ -1,4 +1,4 @@
-﻿id;titulo;año_estreno;director;actores;genero;tipo_adaptacion;adaptacion_id
+﻿ID;Titulo;Año_estreno;Director;Actores;Genero;Tipo_adaptacion;Adaptacion_ID
 1;El editor de libros;2016-01-01;Michael Grandage;Colin Firth, Jude Law, Nicole Kidman;Biografía;Película;
 2;La historia interminable;1984-01-01;Wolfgang Petersen;Barret Oliver, Noah Hathaway, Moses Gunn;Fantasía;Película;19
 3;La ladrona de libros;2013-01-01;Brian Percival;Sophie Nélisse, Geoffrey Rush, Emily Watson, Nico Liersch;Drama;Película;
