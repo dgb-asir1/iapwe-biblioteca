@@ -4,8 +4,12 @@ require "config/conexion.php";
 require "clases/libro.php";
 require "clases/pelicula.php";
 
-$resultado = $conexion->query("SELECT * FROM Libros");
-
+$resultado = $conexion->query("
+    SELECT Libros.*, Autores.autor AS nombre_autor 
+    FROM Libros
+    INNER JOIN Autores 
+        ON Libros.autor_id = Autores.id
+");
 $libros = [];
 
 while (true) {
@@ -65,7 +69,7 @@ while (true) {
                 <?php echo $libro->titulo; ?>
             </td>
             <td class="autor">
-                Autor:<?php echo $libro->autor_id; ?>
+                <?php echo $libro->nombre_autor; ?>
             </td>
             <td class="genero">
                 <?php echo $libro->genero; ?>
