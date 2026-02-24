@@ -1,0 +1,31 @@
+﻿ID;Titulo;Año_estreno;Director;Actores;Genero;Tipo_adaptacion;Adaptacion_ID
+1;El editor de libros;2016-01-01;Michael Grandage;Colin Firth, Jude Law, Nicole Kidman;Biografía;Película;
+2;La historia interminable;1984-01-01;Wolfgang Petersen;Barret Oliver, Noah Hathaway, Moses Gunn;Fantasía;Película;19
+3;La ladrona de libros;2013-01-01;Brian Percival;Sophie Nélisse, Geoffrey Rush, Emily Watson, Nico Liersch;Drama;Película;
+4;La bruja novata;1971-01-01;Robert Stevenson;Angela Lansbury, David Tomlinson, Roddy McDowall;Fantasía;Película;
+5;Harry Potter y el prisionero de Azkaban;2004-01-01;Alfonso Cuarón;Daniel Radcliffe, Rupert Grint, Emma Watson;Fantasía;Película;5
+6;El señor de los anillos: La comunidad del anillo;2001-01-01;Peter Jackson;Elijah Wood, Ian McKellen, Viggo Mortensen;Fantasía;Película;1
+7;Charlie y la fábrica de chocolate;2005-01-01;Tim Burton;Johnny Depp, Freddie Highmore, David Kelly, Deep Roy;Fantasía;Película;
+8;Las Crónicas de Narnia: El león, la bruja y el armario;2005-01-01;Andrew Adamson;Georgie Henley, William Moseley, Skandar Keynes, Anna Popplewell, Tilda Swinton;Fantasía;Película;
+9;Rebeldes;1983-01-01;Francis Ford Coppola;C. Thomas Howell, Matt Dillon, Ralph Macchio, Diane Lane, Rob Lowe, Patrick Swayze, Emilio Estévez, Tom Cruise;Drama;Película;4
+10;Juego de Tronos: Temporada 1;2011-01-01;David Benioff, D.B. Weiss;Emilia Clarke, Kit Harington, Lena Headey, Peter Dinklage, Maisie Williams, Nikolaj Coster-Waldau, Sophie Turner;Fantasía;Serie;6
+11;La verdad sobre el caso Harry Quebert;2018-01-01;Jean-Jacques Annaud;Patrick Dempsey, Ben Schnetzer, Kristine Froseth, Damon Wayans Jr.;Policíaco;Serie;8
+12;La sociedad literaria y el pastel de piel de patata de Guernsey;2018-01-01;Mike Newell;Lily James, Michiel Huisman, Glen Powell, Jessica Brown Findlay, Matthew Goode;Drama;Película;9
+13;Orgullo y prejuicio;2005-01-01;Joe Wright;Keira Knightley, Matthew Macfadyen, Brenda Blethyn, Donald Sutherland;Romance;Película;13
+14;Orgullo y prejuicio;1995-01-01;Simon Langton;Colin Firth, Jennifer Ehle, David Bamber, Crispin Bonham-carter, Anna Chancellor;Romance;Serie;13
+15;Crónica de una muerte anunciada;1987-01-01;Francesco Rosi;Anthony Delon, Rupert Everett, Lucía Bosé, Ornella Muti, Gian Maria Volonté;Drama;Película;
+16;La ley de la calle;1983-01-01;Francis Ford Coppola;Matt Dillon, Mickey Rourke, Diane Lane, Dennis Hopper, Nicolas Cage;Drama;Película;20
+17;Blade Runner;1982-01-01;Ridley Scott;Harrison Ford, Rutger Hauer, Sean Young, Daryl Hannah, Edward James Olmos;Ciencia ficción;Película;22
+18;La isla del tesoro;1934-01-01;Victor Fleming;Jackie Cooper, Wallace Beery, Lewis Stone, Lionel Barrymore, Otto Kruger;Aventuras;Película;25
+19;La isla del tesoro;1950-01-01;Byron Haskin;Bobby Driscoll, Robert Newton, Basil Sydney, Walter Fitzgerald, Denis O'Dea;Aventuras;Película;25
+20;La isla del tesoro;1990-01-01;Fraser Clarke Heston;Charlton Heston, Christian Bale, Oliver Reed, Christopher Lee, Richard Johnson;Aventuras;Serie;25
+21;Matilda;1996-01-01;Danny DeVito;Mara Wilson, Danny DeVito, Rhea Perlman, Embeth Davidtz, Pam Ferris;Infantil;Película;
+22;Un mundo de fantasía;1971-01-01;Mel Stuart;Gene Wilder, Jack Albertson, Peter Ostrum, Roy Kinnear, Michael Bollner;Infantil;Película;
+23;Por quién doblan las campanas;1943-01-01;Sam Wood;Gary Cooper, Ingrid Bergman, Akim Tamiroff, Arturo de Córdova, Vladimir Sokoloff;Drama;Película;
+24;Harry Potter y el cáliz de fuego;2005-01-01;Mike Newell;Daniel Radcliffe, Rupert Grint, Emma Watson, Robbie Coltrane, Michael Gambon;Fantasía;Película;
+25;El gran Gatsby;1949-01-01;Elliott Nugent;Alan Ladd, Betty Field, Macdonald Carey, Ruth Hussey, Barry Sullivan;Drama;Película;27
+26;El gran Gatsby;1974-01-01;Jack Clayton;Robert Redford, Mia Farrow, Bruce Dern, Karen Black, Scott Wilson;Drama;Película;27
+27;El gran Gatsby;2000-01-01;Robert Markowitz;Mira Sorvino, Toby Stephens, Paul Rudd, Martin Donovan, Francie Swift;Drama;Serie;27
+28;El gran Gatsby;2013-01-01;Baz Luhrmann;Leonardo DiCaprio, Tobey Maguire, Carey Mulligan, Joel Edgerton, Isla Fisher;Drama;Película;27
+29;Fahrenheit 451;1966-01-01;François Truffaut;Julie Christie, Oskar Werner, Cyril Cusack, Anton Diffring, Jeremy Spenser, Ann Bell;Ciencia ficción;Película;26
+30;Fahrenheit 451;2018-01-01;Ramin Bahrani;Michael B. Jordan, Michael Shannon, Sofia Boutella, Laura Harrier, Lilly Singh;Ciencia ficción;Película;26

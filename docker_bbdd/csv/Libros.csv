@@ -1,0 +1,29 @@
+﻿Id;Titulo;Autor_id;Genero;Editorial;Paginas;Año;Precio
+1;El Señor de los anillos: La comunidad del anillo;1;Fantástico;Minotauro;488;1954-01-01;18.00
+2;El viejo y el mar;2;Novela;Debolsillo;208;1952-01-01;10.95
+3;Las Crónicas de Narnia: El león, la bruja y el armario;3;Fantástico;Destino;240;1950-01-01;15.00
+4;Rebeldes;4;Drama;Alfaguara;224;1967-01-01;12.00
+5;Harry Potter y la prisionero de Azkaban;5;Fantástico;Salamandra;264;1999-01-01;18.00
+6;Canción de hielo y fuego: Juego de Tronos;6;Fantástico;Planeta;800;1996-01-01;20.00
+7;Reencuentro;7;Drama;Tusquets;128;1971-01-01;10.00
+8;La verdad sobre el caso Harry Quebert;8;Policíaco;Alfaguara;672;2012-01-01;12.95
+9;La sociedad literaria y el pastel de piel de patata de Guernsey;9;Novela epistolar;Salamandra;274;2007-01-01;10.00
+10;El mar;10;Fantástico;SM;260;2015-01-01;12.95
+11;El curioso incidente del perro a medianoche;11;Novela;Salamandra;270;2003-01-01;10.00
+12;La hija del mar;12;Fantástico;SM;112;1996-01-01;10.00
+13;Orgullo y prejuicio;13;Novela;Penguin;448;1813-01-01;12.00
+14;Martes con mi viejo profesor;14;Novela biográfica;Maeva;143;1997-01-01;13.00
+15;Desconocidos;15;Policíaco;Edebé;221;2018-01-01;12.00
+16;Nunca seré tu héroe;16;Novela;SM;192;1998-01-01;10.95
+17;Crónica de una muerte anunciada;17;Policíaco;Debolsillo;156;1981-01-01;9.95
+18;El nombre del viento;18;Fantástico;Debolsillo;880;2007-01-01;22.00
+19;La historia interminable;19;Fantástico;Alfaguara;496;1979-01-01;15.00
+20;La ley de la calle;4;Drama;Alfaguara;112;1975-01-01;10.00
+21;Nacidos de la bruma: El imperio final;20;Fantástico;Nova;841;2006-01-01;20.00
+22;¿Sueñan los androides con ovejas eléctricas?;21;Ciencia ficción;Minotauro;272;1968-01-01;10.00
+23;El príncipe de la niebla;22;Fantástico;Edebé;240;1993-01-01;14.00
+24;La leyenda del rey errante;23;Fantástico;SM;560;2004-01-01;21.00
+25;La isla del tesoro;24;Aventuras;Edelvives;288;1883-01-01;24.90
+26;Matilda;25;Infantil;Loqueleo;288;1988-01-01;10.00
+27;El gran Gatsby;26;Drama;Austral;224;1925-01-01;11.50
+28;Fahrenheit 451;27;Ciencia ficción;Debolsillo;192;1953-01-01;12.50
