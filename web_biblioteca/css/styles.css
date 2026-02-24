@@ -81,7 +81,7 @@ a {
     text-decoration: none;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     border: 1px solid #5D54BC;
-        border: 2px outset #CECAF8;
+    border: 2px outset #CECAF8;
     border-radius: 0.3em;
     padding: 0.5em;
     color: #5D54BC;
@@ -92,4 +92,63 @@ a:hover {
     background-color: #FFFCC9;
     color: #341f00;
 
+}
+
+
+
+/* catalogo */
+.catalogo thead {
+    background-color: rgb(62, 15, 15);
+    color: rgb(215, 180, 180);
+}
+
+.catalogo tr {
+    border: 1px solid black;
+    padding: 1em;
+        min-height: 3em;
+}
+
+.catalogo td {
+    border-bottom: 1px solid black;
+
+    padding-left: 1em;
+    padding-right: 1em;
+
+}
+
+.catalogo .id {
+    min-width: 3em;
+    padding-right: 2em;
+    text-align: right;
+}
+
+.catalogo .titulo {
+    min-width: 30em;
+}
+
+.catalogo .autor {
+    min-width: 12em;
+}
+
+.catalogo .genero {
+    min-width: 9em;
+}
+
+.catalogo .editorial {
+    min-width: 9em;
+}
+
+.catalogo .num_paginas {
+    min-width: 4em;
+    text-align: right;
+}
+
+.catalogo .fecha_pub {
+    min-width: 7em;
+    text-align: center;
+}
+
+.catalogo .precio {
+    min-width: 4em;
+    text-align: right;
 }
