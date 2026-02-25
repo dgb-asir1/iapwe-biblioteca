@@ -4,12 +4,41 @@ require "config/conexion.php";
 require "clases/libro.php";
 require "clases/pelicula.php";
 
-$resultado = $conexion->query("
+
+// LISTADO LIBROS
+
+$filtroLibros = "";
+
+if (!empty($_GET['filtrar_libros'])) {
+    if (!empty($_GET['filtro_titulo'])) {
+        $titulo_para_filtrar = $_GET['filtro_titulo'];
+        $filtroLibros = "WHERE Libros.titulo LIKE '%$titulo_para_filtrar%'";
+    }
+    if (!empty($_GET['filtro_genero'])) {
+        $genero_para_filtrar = $_GET['filtro_genero'];
+        $filtroLibros = "WHERE Libros.genero LIKE '%$genero_para_filtrar%'";
+    }
+    if (!empty($_GET['filtro_autor'])) {
+        $autor_para_filtrar = $_GET['filtro_autor'];
+        $filtroLibros = "WHERE Autores.autor LIKE '%$autor_para_filtrar%'";
+    }
+    if (!empty($_GET['filtro_anyo'])) {
+        $anyo_para_filtrar = $_GET['filtro_anyo'];
+        $filtroLibros = "WHERE YEAR(Libros.fecha_publicacion) = '$anyo_para_filtrar'";
+    }
+}
+
+
+
+$consultaLibros = "
     SELECT Libros.*, Autores.autor AS nombre_autor 
     FROM Libros
     INNER JOIN Autores 
         ON Libros.autor_id = Autores.id
-");
+";
+$consultaLibros .= $filtroLibros;
+echo $consultaLibros;
+$resultado = $conexion->query($consultaLibros);
 $libros = [];
 
 while (true) {
@@ -23,6 +52,7 @@ while (true) {
 }
 
 
+// LISTADO PELICULAS
 $resultado = $conexion->query("SELECT * FROM Peliculas");
 
 $peliculas = [];
@@ -47,17 +77,48 @@ while (true) {
 <br>
 
 <h3>Libros</h3>
+<form action="catalogo.php" method="GET">
+    <fieldset>
+        <legend>
+            <h4>Filtrar libros</h4>
+        </legend>
+        <label for="filtro_titulo">Título </label><input type="text" name="filtro_titulo"></input><br><br>
+        <label for="filtro_genero">Género </label><input type="text" name="filtro_genero"></input><br><br>
+        <label for="filtro_autor">Autor </label><input type="text" name="filtro_autor"></input><br><br>
+        <label for="filtro_anyo">Año </label> <input type="number" name="filtro_anyo" min="-10000" max="3000"></input><br><br>
+        <input type="submit" name="filtrar_libros" value="Filtrar">
+    </fieldset>
+</form>
+
+<br><br>
 <table class="catalogo">
     <thead>
         <tr class="cabecera">
-            <td class="id">ID</td>
-            <td class="titulo">Título</td>
-            <td class="autor">Autor</td>
-            <td class="genero">Género</td>
-            <td class="editorial">Editorial</td>
-            <td class="paginas">Nº Páginas</td>
-            <td class="fecha_pub">Fecha pub.</td>
-            <td class="precio">Precio</td>
+            <td class="id">
+                ID
+            </td>
+            <td class="titulo">
+                Título
+            </td>
+            <td class="autor">
+                Autor
+            </td>
+            <td class="genero">
+                Género
+            </td>
+            <td class="editorial">
+                Editorial
+            </td>
+            <td class="paginas">
+                Nº Páginas
+            </td>
+            <td class="fecha_pub">
+                Fecha pub.
+            </td>
+            <td class="precio">
+                Precio
+            </td>
+
         </tr>
     </thead>
     <?php foreach ($libros as $libro): ?>
@@ -91,6 +152,18 @@ while (true) {
 </table>
 
 <h3>Películas</h3>
+<form action="catalogo.php" method="GET">
+    <fieldset>
+        <legend>
+            <h4>Filtrar películas</h4>
+        </legend>
+        <label for="filtro_titulo">Título </label><input type="text" name="filtro_titulo"></input><br><br>
+        <label for="filtro_genero">Género </label><input type="text" name="filtro_genero"></input><br><br>
+        <label for="filtro_director">director </label><input type="text" name="filtro_director"></input><br><br>
+        <label for="filtro_anyo">Año </label> <input type="number" name="filtro_anyo" min="-10000" max="3000"></input><br><br>
+        <input type="submit" name="filtrar_peliculas" value="Filtrar">
+    </fieldset>
+</form>
 <table class="catalogo">
     <thead>
         <tr class="cabecera">
