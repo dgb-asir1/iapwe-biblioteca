@@ -110,7 +110,7 @@ while (true) {
         </legend>
         <label for="filtro_titulo_libro">Título </label><input type="text" name="filtro_titulo_libro"></input><br><br>
         <label for="filtro_autor_libro">Autor </label><input type="text" name="filtro_autor_libro"></input><br><br>        
-        <label for="filtro_genero_libro">Género </label><input type="text" name="filtro_genero_libro"></input><brdirector
+        <label for="filtro_genero_libro">Género </label><input type="text" name="filtro_genero_libro"></input><br><br>
         <label for="filtro_anyo_libro">Año </label> <input type="number" name="filtro_anyo_libro" min="-10000" max="3000"></input><br><br>
         <input type="submit" name="filtrar_libros" value="Filtrar">
     </fieldset>
