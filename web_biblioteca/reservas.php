@@ -3,7 +3,7 @@
 require "config/conexion.php";
 require "clases/reserva.php";
 
-$resultado = $conexion->query("SELECT * FROM Reservas");
+$resultado = $conexion->query("SELECT Reservas.*, Libros.titulo as titulo_libro FROM Reservas INNER JOIN Libros on Reservas.libro_id = Libros.id");
 
 $reservas = [];
 
@@ -22,21 +22,37 @@ while (true) {
 
 <?php require('./componentes/header.php') ?>
 
-    <h2>RESERVAS</h2>
-    <br>
-    <ul>
-        <?php foreach ($reservas as $reserva): ?>
+<h2>RESERVAS</h2>
 
-            <li>
+<br><br>
+<table class="catalogo">
+    <thead>
+        <tr class="cabecera">
+            <td class="id">
+                ID
+            </td>
+            <td class="titulo">
+                Título
+            </td>
+            <td class="autor">
+                Autor
+            </td>
+        </tr>
+    </thead>
+    <?php foreach ($reservas as $reserva): ?>
+        <tr>
+            <td class="id">
                 <?php echo $reserva->id; ?>
-                <?php echo $reserva->cliente_id; ?>
-                <?php echo $reserva->libro_id; ?>
+            </td>
+            <td class="titulo">
+                <?php echo $reserva->titulo_libro; ?>
+            </td>
+            <td class="autor">
                 <?php echo $reserva->fecha; ?>
-            </li>
-
-        <?php endforeach; ?>
-
-    </ul>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
 </body>
 
 </html>
