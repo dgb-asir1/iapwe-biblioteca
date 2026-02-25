@@ -49,6 +49,7 @@ CREATE TABLE Reservas (
     id INT NOT NULL,
     cliente_id INT,
     libro_id INT,
+    pelicula_id INT,
     fecha DATE,
     PRIMARY KEY (id),
     FOREIGN KEY (cliente_id) REFERENCES Clientes(id),
