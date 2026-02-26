@@ -16,7 +16,7 @@ $cliente = $sentencia->get_result()->fetch_assoc();
 
 <?php require('./componentes/header.php') ?>
 
-    <h2>EDITAR CLIENTES</h2>
+    <h2>EDITAR CLIENTE</h2>
     <br>
     <form action="clientes-actualizar.php" method="POST">
         <input type="hidden" name="id" value="<?php echo $cliente["id"]; ?>">
