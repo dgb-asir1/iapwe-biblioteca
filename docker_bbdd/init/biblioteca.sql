@@ -53,7 +53,9 @@ CREATE TABLE Reservas (
     fecha DATE,
     PRIMARY KEY (id),
     FOREIGN KEY (cliente_id) REFERENCES Clientes(id),
-    FOREIGN KEY (libro_id) REFERENCES Libros(id)
+    FOREIGN KEY (libro_id) REFERENCES Libros(id),
+    FOREIGN KEY (pelicula_id) REFERENCES Peliculas(id)
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE Usuarios (
@@ -103,7 +105,10 @@ CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ';'
 LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
-(id, cliente_id, libro_id, fecha);
+(id, cliente_id, @libro_id, @pelicula_id, fecha)
+SET libro_id = NULLIF(@libro_id, ''),
+pelicula_id = NULLIF(@pelicula_id, '');
+
 
 LOAD DATA INFILE '/var/lib/mysql-files/Usuarios.csv'
 INTO TABLE Usuarios
