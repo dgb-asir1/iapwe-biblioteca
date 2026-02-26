@@ -1,3 +1,2 @@
 ﻿Id;Cliente_id;Libro_id;Pelicula_id;Fecha_reserva
-1;1;4;NULL;2026-01-28
-2;1;NULL;16;2026-01-28
+1;4;16;;2026-01-28
