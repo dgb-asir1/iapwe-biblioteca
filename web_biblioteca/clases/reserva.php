@@ -10,4 +10,7 @@ class Reserva
 
 	public $titulo_libro;
 	public $titulo_pelicula;
+
+	public $nombre_cliente;
+	public $apellidos_cliente;
 }
