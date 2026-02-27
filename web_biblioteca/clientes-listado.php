@@ -33,10 +33,10 @@ while (true) {
         </legend>
         <label for="nombre_cliente">Nombre </label><input type="text" name="nombre_cliente"></input><br><br>
         <label for="apellidos_cliente">Apellidos </label><input type="text" name="apellidos_cliente"></input><br><br>
-        <label for="fecha_nac_cliente">Fecha de nacimiento </label> <input type="number" name="fecha_nac_cliente" min="1900" max="3000"></input><br><br>           
+        <label for="fecha_nac_cliente">Fecha de nacimiento </label> <input type="date" name="fecha_nac_cliente" min="1900" max="3000"></input><br><br>           
         <label for="localidad_cliente">Localidad </label><input type="text" name="localidad_cliente"></input><br><br>
 
-        <input type="submit" name="filtrar_libros" value="Filtrar">
+        <input type="submit" name="crear_cliente" value="crear">
     </fieldset>
 </form>
 

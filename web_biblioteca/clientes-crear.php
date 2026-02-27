@@ -1,14 +1,17 @@
 <?php
 
     require "./config/conexion.php";
-    /*
-    $id = $_GET["id"];
+    
+    $nombre_cliente = $_GET["nombre_cliente"];
+    $apellidos_cliente = $_GET["apellidos_cliente"];
+    $fecha_nac_cliente = $_GET["fecha_nac_cliente"];
+    $localidad_cliente = $_GET["localidad_cliente"];
 
-    $consulta = "DELETE FROM Clientes WHERE id = ?";
+    $consulta = "INSERT INTO Clientes (nombre, apellidos, fecha_nacimiento, localidad)  VALUES(?,?,?,?)";
     $sentencia = $conexion->prepare($consulta);
-    $sentencia->bind_param("i", $id);
+    $sentencia->bind_param("ssss", $nombre_cliente, $apellidos_cliente, $fecha_nac_cliente, $localidad_cliente);
     $sentencia->execute();
-    */
+    
     header("Location: clientes-listado.php");
 
 
