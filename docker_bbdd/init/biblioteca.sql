@@ -2,7 +2,7 @@ USE `iapwe-biblioteca-bbdd`;
 
 
 CREATE TABLE Clientes (
-    id INT NOT NULL,
+    id INT AUTO_INCREMENT NOT NULL,
     nombre VARCHAR(100),
     apellidos VARCHAR(100),
     fecha_nacimiento DATE,
@@ -72,7 +72,7 @@ CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ';'
 LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
-(id, nombre, apellidos, fecha_nacimiento, localidad);
+(@nocargar, nombre, apellidos, fecha_nacimiento, localidad);
 
 LOAD DATA INFILE '/var/lib/mysql-files/Autores.csv'
 INTO TABLE Autores
