@@ -1,7 +1,7 @@
 <?php
 
-    require "../componentes/config/conexion.php";
-    require "../componentes/clases/usuario.php";
+    require "../config/conexion.php";
+    require "../clases/usuario.php";
 
     $nombre_usuario = $_POST["nombre_usuario"];
     $password = $_POST["password"];

@@ -97,9 +97,9 @@ if (
 ) {
 
     // SI HEMOS METIDO UN LIBRO IGNORAMOS LA PELÍCULA
-    if (isset($_GET["titulo_libro"])) {
+    if (!empty($_GET["titulo_libro"])) {
         $libro = ObtenerLibro($conexion, $_GET["titulo_libro"]);
-        if ($libro !== null) {
+        if ($libro !== false) {
 
             $libroExiste = true;
 
@@ -114,7 +114,7 @@ if (
         }
     } else {
         $pelicula = ObtenerPelicula($conexion, $_GET["titulo_pelicula"]);
-        if ($pelicula !== null) {
+        if ($pelicula !== false) {
             $peliculaExiste = true;
             $pelicula_id = $pelicula["id"];
         } else {
