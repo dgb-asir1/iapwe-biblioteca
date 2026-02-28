@@ -1,20 +1,32 @@
 body {
     padding: 4em;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    background-color: whitesmoke;
+    background-color: #F7F6FF;
     color: #373270;
 }
 
-h1 {
 
-    font-size: xx-large;
-    letter-spacing: 3px;
+h1 {
     background: linear-gradient(to left,
             transparent,
-            #FFCB7B 90%);
-    padding: 1em;
-    border-radius: 1em;
-    margin-bottom: 2em;
+            #FFEAC9 90%);
+}
+
+h1,
+h2,
+h3 {
+
+
+    letter-spacing: 3px;
+
+    padding: 0.3em;
+    padding-left: 2em;
+    border-radius: 0.3em;
+    margin-bottom: 1em;
+}
+
+h1 {
+    font-size: xx-large;
 }
 
 
@@ -26,142 +38,234 @@ nav a {
     min-width: 13em;
     display: inline-block;
     border-radius: 0.5em 0.5em 0.2em 0.2em;
+    transition-property: all;
+    transition-property: transform;
+    transition-duration: 0.5s;
 }
 
 nav a:hover {
     box-shadow: 2px 1px 1px #5D54BC;
+    transform: translate(0, -2px);
 }
 
-h2 {
-    padding-left: 2em;
-    padding-top: 1em;
-    background: linear-gradient(to left,
-            transparent,
-            #FFFEF5 90%);
-    padding: 1em;
-    border-radius: 1em;
-}
 
-form {
-    background-color: #fffbf5;
-    border: 1px solid #FFCB7B;
-    padding: 1em;
-    display: block;
-    max-width: 14em;
-    border-radius: 0.3em;
-}
 
-.mensajeResultado {
-    padding-left: 2em;
-}
 
-.textoError{
-    font-weight: bold;
-    color: red;
-}
 
-.textoExito{
-    font-weight: bold;
-    color: green;    
-}
 
-ul {
-    background-color: #FFFEF5;
-    border: 2px inset #CECAF8;
-    border-radius: 1em;
-}
-
-li {
-    list-style: none;
-    font-size: larger;
-    margin: 2em;
-    border-radius: 0.3em;
-    box-shadow: 10px 5px 5px rgb(205, 205, 205);
-}
-
-.datos_cliente {
-    display: inline-block;
-    min-width: 80%;
-    padding: 1em 1em 1em 0em;
-}
-
-.botones_li {
-    display: inline-block;
-    max-width: 15em;
-    padding: 1em;
-}
-
-a {
+a,
+.formButton {
     text-decoration: none;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     border: 1px solid #5D54BC;
     border: 2px outset #CECAF8;
     border-radius: 0.3em;
-    padding: 0.5em;
+    padding: 0.1em;
+    color: #5D54BC;
+    background-color: #F7F6FF;
+    transition-property: all;
+    transition-property: transform;
+    transition-duration: 1s;
+}
+
+a:hover,
+.formButton:hover {
+    background-color: #FFFCC9;
+    color: #341f00;
+}
+
+.selected {
+    background-color: #8077D7;
+    color: #F7F6FF;
+}
+
+
+
+.formButton {
+    font-weight: bold;
+    padding: 1em;
+    text-transform: uppercase;
+}
+
+form {
+    background-color: #fffbf5;
+    /*border: 1px outset #FFCB7B;*/
+    padding: 1em;
+    display: block;
+    border-radius: 0.3em;
+}
+
+.form_horizontal {
+    display: inline-block;
+    padding-right: 1em;
+}
+
+.form_horizontal label {
+    margin-left: 3em;
+}
+
+.form_horizontal input:last-child {
+    float: right;
+    margin-left: 6em;
+    margin-right: 1em;
+}
+
+fieldset {
+    border: 1px inset #FFCB7B;
+}
+
+table {
+    border: 2px solid #5D54BC;
+    background-color: #FFFEF5;
+    min-width: 90%;
+}
+
+tr {
+    padding: 1em;
+    min-height: 2em;
+}
+
+#cabecera {
+    font-weight: bold;
     color: #5D54BC;
     background-color: #F7F6FF;
 }
 
-a:hover {
-    background-color: #FFFCC9;
-    color: #341f00;
-
+tr:nth-child(odd) {
+    background-color: #FFEAC9;
 }
 
 
 
- thead {
-    background-color: rgb(62, 15, 15);
-    color: rgb(215, 180, 180);
+tr:hover {
+    color: #FFFBF5;
+    background-color: #8077D7;
 }
 
- tr {
-    border: 1px solid black;
-    padding: 1em;
-        min-height: 3em;
-}
-
- td {
-    border-bottom: 1px solid black;
-
+td {
+    min-height: 3em;
+    max-height: 3em;
+    border-bottom: 1px solid #5D54BC;
     padding-left: 1em;
     padding-right: 1em;
+    padding-top: 0.4em;
+    padding-bottom: 0.4em;
 
 }
 
-.catalogo .id {
+/* TABLA RESERVAS, LIBROS Y PELICULAS */
+
+table .id {
     min-width: 3em;
     padding-right: 2em;
     text-align: right;
 }
 
-.catalogo .titulo {
-    min-width: 30em;
+table .titulo {
+    min-width: 26em;
 }
 
-.catalogo .autor {
+/* TABLA LIBROS */
+
+table .autor {
     min-width: 12em;
 }
 
-.catalogo .genero {
+table .genero {
+    min-width: 8em;
+}
+
+table .editorial {
     min-width: 9em;
 }
 
-.catalogo .editorial {
-    min-width: 9em;
-}
-
-.catalogo .num_paginas {
+table .num_paginas {
     min-width: 4em;
     text-align: right;
 }
 
-.catalogo .fecha_pub {
+table .fecha_pub {
     min-width: 7em;
     text-align: center;
 }
 
-.catalogo .precio {
+table .precio {
     min-width: 4em;
     text-align: right;
+}
+
+table .reservado {
+    min-width: 4em;
+    text-align: center;
+}
+
+/* TABLA PELICULAS */
+
+table .titulo_pelicula {
+    max-width: 6em;
+}
+
+table .fecha_estreno {
+    max-width: 6em;
+}
+
+table .director {
+    max-width: 13em;
+}
+
+table .actores {
+    max-width: 22em;
+}
+
+table .genero_pelicula {
+    max-width: 6em;
+    text-align: center;
+}
+
+table .tipo_adaptacion {
+    max-width: 6em;
+    text-align: center;
+}
+
+table .adaptacion_id {
+    min-width: 3em;
+    padding-right: 2em;
+    text-align: right;
+}
+
+table .reservada {
+    min-width: 4em;
+    text-align: center;
+}
+
+/* TABLA CLIENTES */
+
+table .nombre_cliente {
+    min-width: 8em;
+}
+
+table .apellidos_cliente {
+    min-width: 8em;
+}
+
+table .editar,
+table .eliminar {
+    min-width: 8em;
+    text-align: center;
+}
+
+
+
+.mensajeResultado {
+    padding-left: 2em;
+}
+
+.textoError {
+    font-weight: bold;
+    color: red;
+}
+
+.textoExito {
+    font-weight: bold;
+    color: green;
 }

@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-if ($_SESSION['usuario_logeado'] == false){
+if ($_SESSION['usuario_logeado'] == false) {
     header("Location: ../index.php");
 }
 
@@ -106,27 +106,24 @@ while (true) {
 
 <?php require('../componentes/header.php') ?>
 
-<h2>CATÁLOGO</h2>
-<br>
+<h3>LIBROS</h3>
 
-<h3>Libros</h3>
-<form action="catalogo.php" method="GET">
+<form action="catalogo.php" method="GET" class="form_horizontal">
     <fieldset>
         <legend>
             <h4>Filtrar libros</h4>
         </legend>
-        <label for="filtro_titulo_libro">Título </label><input type="text" name="filtro_titulo_libro"></input><br><br>
-        <label for="filtro_autor_libro">Autor </label><input type="text" name="filtro_autor_libro"></input><br><br>
-        <label for="filtro_genero_libro">Género </label><input type="text" name="filtro_genero_libro"></input><br><br>
-        <label for="filtro_anyo_libro">Año </label> <input type="number" name="filtro_anyo_libro" min="-10000" max="3000"></input><br><br>
-        <input type="submit" name="filtrar_libros" value="Filtrar">
+        <label for="filtro_titulo_libro">Título </label><input type="text" name="filtro_titulo_libro"></input>
+        <label for="filtro_autor_libro">Autor </label><input type="text" name="filtro_autor_libro"></input>
+        <label for="filtro_genero_libro">Género </label><input type="text" name="filtro_genero_libro"></input>
+        <label for="filtro_anyo_libro">Año </label> <input type="number" name="filtro_anyo_libro" min="-10000" max="3000"></input>
+        <input type="submit" name="filtrar_libros" value="Filtrar" class="formButton">
     </fieldset>
 </form>
 
-<br><br>
-<table class="catalogo">
+<table>
     <thead>
-        <tr class="cabecera">
+        <tr id="cabecera">
             <td class="id">ID</td>
             <td class="titulo">Título</td>
             <td class="autor">Autor</td>
@@ -135,7 +132,7 @@ while (true) {
             <td class="paginas">Nº Páginas</td>
             <td class="fecha_pub">Fecha pub.</td>
             <td class="precio">Precio</td>
-            <td class="reserva">Reservado</td>
+            <td class="reservado">Reservado</td>
         </tr>
     </thead>
     <?php foreach ($libros as $libro): ?>
@@ -164,38 +161,40 @@ while (true) {
             <td class="precio">
                 <?php echo $libro->precio; ?>
             </td>
-            <td class="reserva">
+            <td class="reservado">
                 <?php echo $libro->reserva; ?>
             </td>
         </tr>
     <?php endforeach; ?>
 </table>
 
-<h3>Películas</h3>
-<form action="catalogo.php" method="GET">
+<h3>PELÍCULAS</h3>
+
+<form action="catalogo.php" method="GET" class="form_horizontal">
     <fieldset>
         <legend>
             <h4>Filtrar películas</h4>
         </legend>
-        <label for="filtro_titulo_pelicula">Título </label><input type="text" name="filtro_titulo_pelicula"></input><br><br>
-        <label for="filtro_director_pelicula">Director </label><input type="text" name="filtro_director_pelicula"></input><br><br>
-        <label for="filtro_genero_pelicula">Género </label><input type="text" name="filtro_genero_pelicula"></input><br><br>
-        <label for="filtro_anyo_pelicula">Año </label> <input type="number" name="filtro_anyo_pelicula" min="-10000" max="3000"></input><br><br>
-        <input type="submit" name="filtrar_peliculas" value="Filtrar">
+        <label for="filtro_titulo_pelicula">Título </label><input type="text" name="filtro_titulo_pelicula"></input>
+        <label for="filtro_director_pelicula">Director </label><input type="text" name="filtro_director_pelicula"></input>
+        <label for="filtro_genero_pelicula">Género </label><input type="text" name="filtro_genero_pelicula"></input>
+        <label for="filtro_anyo_pelicula">Año </label> <input type="number" name="filtro_anyo_pelicula" min="-10000" max="3000"></input>
+        <input type="submit" name="filtrar_peliculas" value="Filtrar" class="formButton">
     </fieldset>
 </form>
-<table class="catalogo">
+
+<table>
     <thead>
-        <tr class="cabecera">
+        <tr id="cabecera">
             <td class="id">ID</td>
             <td class="titulo">Título</td>
             <td class="fecha_estreno">Fecha estreno</td>
             <td class="director">Director</td>
             <td class="actores">Actores</td>
-            <td class="genero">Género</td>
+            <td class="genero_pelicula">Género</td>
             <td class="tipo_adaptacion">Tipo adaptación</td>
             <td class="adaptacion_id">Adaptación ID</td>
-            <td class="reserva">Reservada</td>
+            <td class="reservada">Reservada</td>
         </tr>
     </thead>
 
@@ -216,7 +215,7 @@ while (true) {
             <td class="actores">
                 <?php echo $pelicula->actores; ?>
             </td>
-            <td class="genero">
+            <td class="genero_pelicula">
                 <?php echo $pelicula->genero; ?>
             </td>
             <td class="tipo_adaptacion">
@@ -225,7 +224,7 @@ while (true) {
             <td class="adaptacion_id">
                 <?php echo $pelicula->adaptacion_id; ?>
             </td>
-            <td class="reserva">
+            <td class="reservada">
                 <?php echo $pelicula->reserva; ?>
             </td>
         </tr>
