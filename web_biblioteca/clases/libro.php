@@ -10,6 +10,9 @@ class Libro
 	public $paginas;
 	public $fecha_publicacion;
 	public $precio;
+	public $reserva;
 
 	public $nombre_autor;
+
+
 }

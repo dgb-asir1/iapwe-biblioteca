@@ -10,4 +10,5 @@ class Pelicula
 	public $genero;
 	public $tipo_adaptacion;
 	public $adaptacion_id;
+	public $reserva;
 }
