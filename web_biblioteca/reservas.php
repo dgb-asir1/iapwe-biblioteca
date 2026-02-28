@@ -2,9 +2,105 @@
 
 require "config/conexion.php";
 require "clases/reserva.php";
+require "clases/cliente.php";
 
+
+// RESERVAR
+
+$libroExiste = null;
+$peliculaExiste = null;
+$clienteExiste = null;
+$libro_id = null;
+$pelicula_id = null;
+
+
+function ObtenerCliente($conexion, $nombre_cliente, $apellidos_cliente)
+{
+    $consulta = "SELECT Clientes.id FROM Clientes WHERE Clientes.nombre = ? AND Clientes.apellidos = ?";
+    $sentencia = $conexion->prepare($consulta);
+    $sentencia->bind_param("ss", $nombre_cliente, $apellidos_cliente);
+    $sentencia->execute();
+    $cliente = $sentencia->get_result()->fetch_assoc();
+    return ($cliente);
+}
+
+function ObtenerLibro($conexion, $titulo_libro)
+{
+    $consulta = "SELECT Libros.id FROM Libros WHERE Libros.titulo = ?";
+    $sentencia = $conexion->prepare($consulta);
+    $sentencia->bind_param("s", $titulo_libro);
+    $sentencia->execute();
+    $libro = $sentencia->get_result()->fetch_assoc();
+    return ($libro);
+}
+
+function ObtenerPelicula($conexion, $titulo_pelicula)
+{
+    $consulta = "SELECT Peliculas.id FROM Peliculas WHERE Peliculas.titulo = ?";
+    $sentencia = $conexion->prepare($consulta);
+    $sentencia->bind_param("s", $titulo_pelicula);
+    $sentencia->execute();
+    $pelicula = $sentencia->get_result()->fetch_assoc();
+    return ($pelicula);
+}
+
+
+
+function EfectuarReserva($conexion, $libro_id, $pelicula_id, $cliente_id)
+{
+    $fecha = date("Y-m-d");
+
+    echo "INTENTANDO RESERVAR LIBRO Nº $libro_id PARA EL CLIENTE $cliente_id";
+
+    $consulta = "INSERT INTO Reservas (cliente_id, libro_id, pelicula_id, fecha) VALUES(?,?,?,?)";
+
+    echo "la consulta es $consulta";
+
+    $sentencia = $conexion->prepare($consulta);
+
+    $sentencia->bind_param("iiis", $cliente_id, $libro_id, $pelicula_id, $fecha);
+    $sentencia->execute();
+}
+
+
+if (isset($_GET["reservar"])) {
+    if ((!empty($_GET["titulo_libro"]) || !empty($_GET["titulo_pelicula"]))
+        && !empty($_GET["nombre_cliente"])
+        && !empty($_GET["apellidos_cliente"])
+    ) {
+
+        // SI HEMOS METIDO UN LIBRO IGNORAMOS LA PELÍCULA
+        if (isset($_GET["titulo_libro"])) {
+            echo "hola";
+            var_dump($_GET["titulo_libro"]);
+            $libro = ObtenerLibro($conexion, $_GET["titulo_libro"]);
+            var_dump($libro);
+            if ($libro !== null) {
+                $libroExiste = true;
+                $libro_id = $libro["id"];
+            }
+        } else {
+            $pelicula = ObtenerPelicula($conexion, $_GET["titulo_pelicula"]);
+            if ($pelicula !== null) {
+                $peliculaExiste = true;
+                $pelicula_id = $pelicula["id"];
+            }
+        }
+
+        $cliente = ObtenerCliente($conexion, $_GET["nombre_cliente"], $_GET["apellidos_cliente"]);
+        if ($cliente !== null) {
+            $clienteExiste = true;
+            $cliente_id = $cliente["id"];
+        }
+
+        if ((($libroExiste) || ($peliculaExiste)) && ($clienteExiste)) {
+            EfectuarReserva($conexion, $libro_id, $pelicula_id, $cliente_id);
+        }
+    }
+}
+
+// LISTADO RESERVAS
 $filtroReservas = "";
-
 
 if (!empty($_GET['filtrar_reservas'])) {
     if (!empty($_GET['filtro_reservas_nombre_usuario'])) {
@@ -15,12 +111,11 @@ if (!empty($_GET['filtrar_reservas'])) {
 
 $consulta = "SELECT Reservas.*, Libros.titulo as titulo_libro,
     Clientes.nombre as nombre_cliente, Clientes.apellidos as apellidos_cliente
-    FROM Reservas 
-    INNER JOIN Libros on Reservas.libro_id = Libros.id 
-    INNER JOIN Clientes on Reservas.cliente_id = Clientes.id";
+    FROM Reservas
+    LEFT JOIN Libros ON Reservas.libro_id = Libros.id
+    LEFT JOIN Peliculas ON Reservas.pelicula_id = Peliculas.id
+    INNER JOIN Clientes ON Reservas.cliente_id = Clientes.id";
 $consulta .= $filtroReservas;
-
-echo $consulta;
 
 $resultado = $conexion->query($consulta);
 
@@ -38,12 +133,24 @@ while (true) {
 
 ?>
 
-
+<!-- VISTA -->
 <?php require('./componentes/header.php') ?>
 
 <h2>RESERVAS</h2>
 
-<br><br>
+<form action="reservas.php" method="GET">
+    <fieldset>
+        <legend>
+            <h4>Reservar libro o película</h4>
+        </legend>
+        <label for="titulo_libro">Libro</label><input type="text" name="titulo_libro"></input><br><br>
+        <label for="titulo_pelicula">Pelicula</label><input type="text" name="titulo_pelicula"></input><br><br>
+        <label for="nombre_cliente">Nombre cliente</label><input type="text" name="nombre_cliente"></input><br><br>
+        <label for="apellidos_cliente">Apellidos cliente</label><input type="text" name="apellidos_cliente"></input><br><br>
+        <input type="submit" name="reservar" value="Reservar">
+    </fieldset>
+</form>
+
 <form action="reservas.php" method="GET">
     <fieldset>
         <legend>
