@@ -46,7 +46,7 @@ CREATE TABLE Peliculas (
 
 
 CREATE TABLE Reservas (
-    id INT NOT NULL,
+    id INT AUTO_INCREMENT NOT NULL,
     cliente_id INT,
     libro_id INT,
     pelicula_id INT,
@@ -105,7 +105,7 @@ CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ';'
 LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
-(id, cliente_id, @libro_id, @pelicula_id, fecha)
+(@nocargar, cliente_id, @libro_id, @pelicula_id, fecha)
 SET libro_id = NULLIF(@libro_id, ''),
 pelicula_id = NULLIF(@pelicula_id, '');
 
