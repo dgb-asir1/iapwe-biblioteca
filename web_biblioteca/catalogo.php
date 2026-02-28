@@ -29,24 +29,27 @@ if (!empty($_GET['filtrar_libros'])) {
 }
 
 
-
+// INNER JOIN Reservas ON Libros.id = Reservas.libro_id
 $consultaLibros = "
     SELECT Libros.*, Autores.autor AS nombre_autor 
     FROM Libros
     INNER JOIN Autores 
         ON Libros.autor_id = Autores.id
+    
 ";
 $consultaLibros .= $filtroLibros;
 $resultado = $conexion->query($consultaLibros);
+
 $libros = [];
 
-while (true) {
-    $libro = $resultado->fetch_object(Libro::class);
+while ($libro = $resultado->fetch_object(Libro::class)) {
 
-    if ($libro == null) {
-        break;
+    $consultaReserva = "SELECT COUNT(*) AS reserva FROM Libros INNER JOIN Reservas ON Libros.id = Reservas.libro_id WHERE Libros.id = {$libro->id}";
+    $resultadoConsultaReserva = $conexion->query($consultaReserva);
+    $filasResultado = $resultadoConsultaReserva->fetch_assoc();
+    if($filasResultado["reserva"] === "1"){
+        $libro->reserva = "Sí";
     }
-
     $libros[] = $libro;
 }
 
@@ -109,7 +112,7 @@ while (true) {
             <h4>Filtrar libros</h4>
         </legend>
         <label for="filtro_titulo_libro">Título </label><input type="text" name="filtro_titulo_libro"></input><br><br>
-        <label for="filtro_autor_libro">Autor </label><input type="text" name="filtro_autor_libro"></input><br><br>        
+        <label for="filtro_autor_libro">Autor </label><input type="text" name="filtro_autor_libro"></input><br><br>
         <label for="filtro_genero_libro">Género </label><input type="text" name="filtro_genero_libro"></input><br><br>
         <label for="filtro_anyo_libro">Año </label> <input type="number" name="filtro_anyo_libro" min="-10000" max="3000"></input><br><br>
         <input type="submit" name="filtrar_libros" value="Filtrar">
@@ -120,31 +123,15 @@ while (true) {
 <table class="catalogo">
     <thead>
         <tr class="cabecera">
-            <td class="id">
-                ID
-            </td>
-            <td class="titulo">
-                Título
-            </td>
-            <td class="autor">
-                Autor
-            </td>
-            <td class="genero">
-                Género
-            </td>
-            <td class="editorial">
-                Editorial
-            </td>
-            <td class="paginas">
-                Nº Páginas
-            </td>
-            <td class="fecha_pub">
-                Fecha pub.
-            </td>
-            <td class="precio">
-                Precio
-            </td>
-
+            <td class="id">ID</td>
+            <td class="titulo">Título</td>
+            <td class="autor">Autor</td>
+            <td class="genero">Género</td>
+            <td class="editorial">Editorial</td>
+            <td class="paginas">Nº Páginas</td>
+            <td class="fecha_pub">Fecha pub.</td>
+            <td class="precio">Precio</td>
+            <td class="reserva">Reservado</td>
         </tr>
     </thead>
     <?php foreach ($libros as $libro): ?>
@@ -173,6 +160,9 @@ while (true) {
             <td class="precio">
                 <?php echo $libro->precio; ?>
             </td>
+            <td class="reserva">
+                <?php echo $libro->reserva; ?>
+            </td>
         </tr>
     <?php endforeach; ?>
 </table>
@@ -184,7 +174,7 @@ while (true) {
             <h4>Filtrar películas</h4>
         </legend>
         <label for="filtro_titulo_pelicula">Título </label><input type="text" name="filtro_titulo_pelicula"></input><br><br>
-        <label for="filtro_director_pelicula">Director </label><input type="text" name="filtro_director_pelicula"></input><br><br>        
+        <label for="filtro_director_pelicula">Director </label><input type="text" name="filtro_director_pelicula"></input><br><br>
         <label for="filtro_genero_pelicula">Género </label><input type="text" name="filtro_genero_pelicula"></input><br><br>
         <label for="filtro_anyo_pelicula">Año </label> <input type="number" name="filtro_anyo_pelicula" min="-10000" max="3000"></input><br><br>
         <input type="submit" name="filtrar_peliculas" value="Filtrar">
@@ -201,6 +191,7 @@ while (true) {
             <td class="genero">Género</td>
             <td class="tipo_adaptacion">Tipo adaptación</td>
             <td class="adaptacion_id">Adaptación ID</td>
+            <td class="reserva">Reservada</td>
         </tr>
     </thead>
 
@@ -229,6 +220,9 @@ while (true) {
             </td>
             <td class="adaptacion_id">
                 <?php echo $pelicula->adaptacion_id; ?>
+            </td>
+            <td class="reserva">
+                <?php echo $pelicula->reserva; ?>
             </td>
         </tr>
     <?php endforeach; ?>
