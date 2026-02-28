@@ -7,9 +7,9 @@ require "../componentes/clases/cliente.php";
 // LISTADO RESERVAS
 $filtroReservas = "";
 
-if (!empty($_GET['filtrar_reservas'])) {
-    if (!empty($_GET['filtro_reservas_nombre_usuario'])) {
-        $nombre_para_filtrar = $_GET['filtro_reservas_nombre_usuario'];
+if (!empty($_POST['filtrar_reservas'])) {
+    if (!empty($_POST['filtro_reservas_nombre_usuario'])) {
+        $nombre_para_filtrar = $_POST['filtro_reservas_nombre_usuario'];
         $filtroReservas = " WHERE Clientes.nombre LIKE '%$nombre_para_filtrar%'";
     }
 }
@@ -40,11 +40,11 @@ while (true) {
 
 
 // RESERVAR
-$libroExiste = true;
-$peliculaExiste = true;
+$libroExiste = false;
+$peliculaExiste = false;
 $libroYaReservado = false;
 $peliculaYaReservada = false;
-$clienteExiste = true;
+$clienteExiste = false;
 $libro_id = null;
 $pelicula_id = null;
 
@@ -75,7 +75,7 @@ function ObtenerPelicula($conexion, $titulo_pelicula)
     $sentencia = $conexion->prepare($consulta);
     $sentencia->bind_param("s", $titulo_pelicula);
     $sentencia->execute();
-    $pelicula = $sentencia->get_result()->fetch_assoc();
+    $pelicula = $sentencia->POST_result()->fetch_assoc();
     return ($pelicula);
 }
 
@@ -92,28 +92,58 @@ function EfectuarReserva($conexion, $libro_id, $pelicula_id, $cliente_id)
 }
 
 if (
-    isset($_GET["reservar"]) && (!empty($_GET["titulo_libro"]) || !empty($_GET["titulo_pelicula"]))
-    && !empty($_GET["nombre_cliente"]) && !empty($_GET["apellidos_cliente"])
-) {
+    isset($_POST["reservar"])){
+        echo "reservar is set<br>";
+    }
+if (
+    !empty($_POST["reservar"])){
+    echo "reservar is not empty!<br>";
+    };
 
+if (
+    isset($_POST["titulo_libro"])){
+        echo "titulo_libro is set<br>";
+    }
+if (
+    !empty($_POST["titulo_libro"])){
+    echo "titulo_libro is not empty!<br>";
+    };
+if (
+    isset($_POST["nombre_cliente"])){
+        echo "nombre_cliente is set<br>";
+    }
+if (
+    !empty($_POST["nombre_cliente"])){
+    echo "nombre_cliente is not empty!<br>";
+    };    
+
+if (
+    isset($_POST["reservar"]) && (!empty($_POST["titulo_libro"]) || !empty($_POST["titulo_pelicula"]))
+    && !empty($_POST["nombre_cliente"]) && !empty($_POST["apellidos_cliente"])
+) {
+    echo "Vamos a reservar algo !!!!!!!!!!!!";
     // SI HEMOS METIDO UN LIBRO IGNORAMOS LA PELÍCULA
-    if (!empty($_GET["titulo_libro"])) {
-        $libro = ObtenerLibro($conexion, $_GET["titulo_libro"]);
+    if (!empty($_POST["titulo_libro"])) {
+        $libro = ObtenerLibro($conexion, $_POST["titulo_libro"]);
         if ($libro !== false) {
 
             $libroExiste = true;
+            echo "el libro existe<br>";
 
             if ($libro["reserva"] !== null) {
+                echo "el libro ya esta reservado<br>";
                 $libroYaReservado = true;
             } else {
+                echo "el libro no esta reservado<br>";
                 $libro_id = $libro["id"];
             }
             
         } else {
             $libroExiste = false;
+            echo "el libro no existe<br>";
         }
     } else {
-        $pelicula = ObtenerPelicula($conexion, $_GET["titulo_pelicula"]);
+        $pelicula = ObtenerPelicula($conexion, $_POST["titulo_pelicula"]);
         if ($pelicula !== false) {
             $peliculaExiste = true;
             $pelicula_id = $pelicula["id"];
@@ -122,18 +152,23 @@ if (
         }
     }
 
-    $cliente = ObtenerCliente($conexion, $_GET["nombre_cliente"], $_GET["apellidos_cliente"]);
+    $cliente = ObtenerCliente($conexion, $_POST["nombre_cliente"], $_POST["apellidos_cliente"]);
     if ($cliente !== null) {
-
+        echo "el cliente existe<br>";
+        $clienteExiste = true;
         $cliente_id = $cliente["id"];
     } else {
         $clienteExiste = false;
+        echo "el cliente no existe<br>";
     }
+
+
 
     if (
         (($libroExiste && !$libroYaReservado) || ($peliculaExiste && !$peliculaYaReservada))
         && ($clienteExiste)
     ) {
+        echo "preparados para efectuar reserva<br>";
         EfectuarReserva($conexion, $libro_id, $pelicula_id, $cliente_id);
     }
 }
@@ -152,8 +187,8 @@ function CancelarReserva($conexion, $id_reserva)
     $sentencia->execute();
 }
 
-if (!empty($_GET['devolver'])) {
-    CancelarReserva($conexion, $_GET['id_reserva_a_cancelar']);
+if (!empty($_POST['devolver'])) {
+    CancelarReserva($conexion, $_POST['id_reserva_a_cancelar']);
 }
 
 
@@ -165,14 +200,14 @@ if (!empty($_GET['devolver'])) {
 <h2>RESERVAS</h2>
 
 <div class="mensajeResultado">
-    <?= (!$libroExiste) ? "<br><span class='textoError'>Libro no encontrado</span><br><br>" : '' ?>
-    <?= (!$peliculaExiste) ? "<br><span class='textoError'>Película no encontrado</span><br><br>" : '' ?>
-    <?= ($libroYaReservado) ? "<br><span class='textoError'>Libro ya reservado.</span><br><br>" : '' ?>
-    <?= ($peliculaYaReservada) ? "<br><span class='textoError'>Película ya reservada.</span><br><br>" : '' ?>
-    <?= (!$clienteExiste) ? "<br><span class='textoError'>Cliente no encontrado.</span><br><br>" : '' ?>
+    <?= (!$libroExiste && false) ? "<br><span class='textoError'>Libro no encontrado</span><br><br>" : '' ?>
+    <?= (!$peliculaExiste && false) ? "<br><span class='textoError'>Película no encontrado</span><br><br>" : '' ?>
+    <?= ($libroYaReservado && false) ? "<br><span class='textoError'>Libro ya reservado.</span><br><br>" : '' ?>
+    <?= ($peliculaYaReservada && false) ? "<br><span class='textoError'>Película ya reservada.</span><br><br>" : '' ?>
+    <?= (!$clienteExiste && false) ? "<br><span class='textoError'>Cliente no encontrado.</span><br><br>" : '' ?>
 </div>
 
-<form action="reservas.php" method="GET">
+<form action="reservas.php" method="POST">
     <fieldset>
         <legend>
             <h4>Reservar libro o película</h4>
@@ -185,7 +220,7 @@ if (!empty($_GET['devolver'])) {
     </fieldset>
 </form>
 
-<form action="reservas.php" method="GET">
+<form action="reservas.php" method="POST">
     <fieldset>
         <legend>
             <h4>Filtrar reservas por usuario</h4>
@@ -242,7 +277,7 @@ if (!empty($_GET['devolver'])) {
                 <?= ($reserva->activa == 1) ? "Sí" : 'No' ?>
             </td>
             <td class="devolver">
-                <form action="reservas.php" method="GET">
+                <form action="reservas.php" method="POST">
                     <input type="hidden" name="id_reserva_a_cancelar" value="<?php echo $reserva->id; ?>">
                     <input type="submit" name="devolver" value="Devolver">
                 </form>
