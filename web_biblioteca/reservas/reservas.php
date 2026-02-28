@@ -83,11 +83,7 @@ function EfectuarReserva($conexion, $libro_id, $pelicula_id, $cliente_id)
 {
     $fecha = date("Y-m-d");
 
-    echo "INTENTANDO RESERVAR LIBRO Nº $libro_id PARA EL CLIENTE $cliente_id";
-
     $consulta = "INSERT INTO Reservas (cliente_id, libro_id, pelicula_id, fecha) VALUES(?,?,?,?)";
-
-    echo "la consulta es $consulta";
 
     $sentencia = $conexion->prepare($consulta);
 
@@ -102,10 +98,7 @@ if (
 
     // SI HEMOS METIDO UN LIBRO IGNORAMOS LA PELÍCULA
     if (isset($_GET["titulo_libro"])) {
-        echo "hola";
-        var_dump($_GET["titulo_libro"]);
         $libro = ObtenerLibro($conexion, $_GET["titulo_libro"]);
-        var_dump($libro);
         if ($libro !== null) {
             $libroExiste = true;
 
