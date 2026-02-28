@@ -113,8 +113,7 @@ if (
             } else {
                 $libro_id = $libro["id"];
             }
-        }
-        else {
+        } else {
             $libroExiste = false;
         }
     } else {
@@ -122,8 +121,7 @@ if (
         if ($pelicula !== null) {
             $peliculaExiste = true;
             $pelicula_id = $pelicula["id"];
-        }
-        else {
+        } else {
             $peliculaExiste = false;
         }
     }
@@ -132,19 +130,35 @@ if (
     if ($cliente !== null) {
 
         $cliente_id = $cliente["id"];
-    }
-    else {
+    } else {
         $clienteExiste = false;
     }
 
-    if ( 
-        (($libroExiste && !$libroYaReservado ) || ($peliculaExiste && !$peliculaYaReservada)) 
+    if (
+        (($libroExiste && !$libroYaReservado) || ($peliculaExiste && !$peliculaYaReservada))
         && ($clienteExiste)
     ) {
         EfectuarReserva($conexion, $libro_id, $pelicula_id, $cliente_id);
     }
 }
 
+// DEVOLVER
+
+function CancelarReserva($conexion, $id_reserva)
+{
+
+    $consulta = "UPDATE Reservas SET activa = 0 WHERE Reservas.id = ?";
+
+
+    $sentencia = $conexion->prepare($consulta);
+
+    $sentencia->bind_param("i", $id_reserva);
+    $sentencia->execute();
+}
+
+if (!empty($_GET['devolver'])) {
+    CancelarReserva($conexion, $_GET['id_reserva_a_cancelar']);
+}
 
 
 ?>
@@ -158,8 +172,8 @@ if (
     <?= (!$libroExiste) ? "<br><span class='textoError'>Libro no encontrado</span><br><br>" : '' ?>
     <?= (!$peliculaExiste) ? "<br><span class='textoError'>Película no encontrado</span><br><br>" : '' ?>
     <?= ($libroYaReservado) ? "<br><span class='textoError'>Libro ya reservado.</span><br><br>" : '' ?>
-    <?= ($peliculaYaReservada) ? "<br><span class='textoError'>Película ya reservada.</span><br><br>" : '' ?> 
-    <?= (!$clienteExiste) ? "<br><span class='textoError'>Cliente no encontrado.</span><br><br>" : '' ?>           
+    <?= ($peliculaYaReservada) ? "<br><span class='textoError'>Película ya reservada.</span><br><br>" : '' ?>
+    <?= (!$clienteExiste) ? "<br><span class='textoError'>Cliente no encontrado.</span><br><br>" : '' ?>
 </div>
 
 <form action="reservas.php" method="GET">
@@ -205,7 +219,10 @@ if (
             </td>
             <td class="activa">
                 Activa
-            </td>            
+            </td>
+            <td class="devolver">
+                Devolución
+            </td>
         </tr>
     </thead>
     <?php foreach ($reservas as $reserva): ?>
@@ -226,8 +243,14 @@ if (
                 <?php echo $reserva->fecha; ?>
             </td>
             <td class="activa">
-                <?php echo $reserva->activa; ?>
-            </td>             
+                <?= ($reserva->activa == 1) ? "Sí" : 'No' ?>
+            </td>
+            <td class="devolver">
+                <form action="reservas.php" method="GET">
+                    <input type="hidden" name="id_reserva_a_cancelar" value="<?php echo $reserva->id; ?>">
+                    <input type="submit" name="devolver" value="Devolver">
+                </form>
+            </td>
         </tr>
     <?php endforeach; ?>
 </table>
