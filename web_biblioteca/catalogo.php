@@ -81,7 +81,6 @@ $consultaPeliculas = "
     SELECT * FROM Peliculas
 ";
 $consultaPeliculas .= $filtroPeliculas;
-echo $consultaPeliculas;
 $resultado = $conexion->query($consultaPeliculas);
 
 $peliculas = [];
