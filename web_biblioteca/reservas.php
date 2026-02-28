@@ -38,11 +38,14 @@ while (true) {
 
 
 // RESERVAR
-$libroExiste = null;
-$peliculaExiste = null;
-$clienteExiste = null;
+$libroExiste = true;
+$peliculaExiste = true;
+$libroYaReservado = false;
+$peliculaYaReservada = false;
+$clienteExiste = true;
 $libro_id = null;
 $pelicula_id = null;
+
 
 function ObtenerCliente($conexion, $nombre_cliente, $apellidos_cliente)
 {
@@ -107,10 +110,12 @@ if (
             var_dump($libro);
             if ($libro["reserva"] !== null) {
                 $libroYaReservado = true;
-                echo "Ya está reservado!!";
             } else {
                 $libro_id = $libro["id"];
             }
+        }
+        else {
+            $libroExiste = false;
         }
     } else {
         $pelicula = ObtenerPelicula($conexion, $_GET["titulo_pelicula"]);
@@ -118,12 +123,18 @@ if (
             $peliculaExiste = true;
             $pelicula_id = $pelicula["id"];
         }
+        else {
+            $peliculaExiste = false;
+        }
     }
 
     $cliente = ObtenerCliente($conexion, $_GET["nombre_cliente"], $_GET["apellidos_cliente"]);
     if ($cliente !== null) {
-        $clienteExiste = true;
+
         $cliente_id = $cliente["id"];
+    }
+    else {
+        $clienteExiste = false;
     }
 
     if ( 
@@ -142,6 +153,14 @@ if (
 <?php require('./componentes/header.php') ?>
 
 <h2>RESERVAS</h2>
+
+<div class="mensajeResultado">
+    <?= (!$libroExiste) ? "<br><span class='textoError'>Libro no encontrado</span><br><br>" : '' ?>
+    <?= (!$peliculaExiste) ? "<br><span class='textoError'>Película no encontrado</span><br><br>" : '' ?>
+    <?= ($libroYaReservado) ? "<br><span class='textoError'>Libro ya reservado.</span><br><br>" : '' ?>
+    <?= ($peliculaYaReservada) ? "<br><span class='textoError'>Película ya reservada.</span><br><br>" : '' ?> 
+    <?= (!$clienteExiste) ? "<br><span class='textoError'>Cliente no encontrado.</span><br><br>" : '' ?>           
+</div>
 
 <form action="reservas.php" method="GET">
     <fieldset>

@@ -51,6 +51,20 @@ form {
     border-radius: 0.3em;
 }
 
+.mensajeResultado {
+    padding-left: 2em;
+}
+
+.textoError{
+    font-weight: bold;
+    color: red;
+}
+
+.textoExito{
+    font-weight: bold;
+    color: green;    
+}
+
 ul {
     background-color: #FFFEF5;
     border: 2px inset #CECAF8;
