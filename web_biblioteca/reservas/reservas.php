@@ -1,8 +1,8 @@
 <?php
 
-require "config/conexion.php";
-require "clases/reserva.php";
-require "clases/cliente.php";
+require "../componentes/config/conexion.php";
+require "../componentes/clases/reserva.php";
+require "../componentes/clases/cliente.php";
 
 // LISTADO RESERVAS
 $filtroReservas = "";
@@ -166,7 +166,7 @@ if (!empty($_GET['devolver'])) {
 ?>
 
 <!-- VISTA -->
-<?php require('./componentes/header.php') ?>
+<?php require('../componentes/header.php') ?>
 
 <h2>RESERVAS</h2>
 

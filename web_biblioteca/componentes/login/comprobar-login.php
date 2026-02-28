@@ -1,7 +1,7 @@
 <?php
 
-    require "config/conexion.php";
-    require "clases/usuario.php";
+    require "../componentes/config/conexion.php";
+    require "../componentes/clases/usuario.php";
 
     $nombre_usuario = $_POST["nombre_usuario"];
     $password = $_POST["password"];
@@ -19,10 +19,10 @@
     $usuario = $resultado->fetch_object(Usuario::class);
 
     if($usuario != null && hash("sha256", $password) == $usuario->password){
-        header("Location: reservas.php");
+        header("Location: ../../reservas/reservas.php");
     }else {
         //crear mensaje de error
-        header("Location: index.php");
+        header("Location: ../index.php");
     }
 
 

@@ -2,9 +2,8 @@
 
 ?>
 
-
 <head>
-    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="componentes/css/styles.css">
 </head>
 
 <body>
@@ -12,7 +11,7 @@
 
     <br>
     <h3>Introduzca sus credenciales</h3>
-    <form action="comprobar-login.php" method="POST">
+    <form action="componentes/login/comprobar-login.php" method="POST">
         <input type="text" name="nombre_usuario" placeholder="Usuario" required>
         <br><br>
         <input type="password" name="password" placeholder="Contraseña" required>
