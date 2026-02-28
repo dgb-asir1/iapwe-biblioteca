@@ -19,8 +19,11 @@ $consulta = "SELECT Reservas.*, Libros.titulo as titulo_libro,
     FROM Reservas
     LEFT JOIN Libros ON Reservas.libro_id = Libros.id
     LEFT JOIN Peliculas ON Reservas.pelicula_id = Peliculas.id
-    INNER JOIN Clientes ON Reservas.cliente_id = Clientes.id";
+    INNER JOIN Clientes ON Reservas.cliente_id = Clientes.id
+    ";
 $consulta .= $filtroReservas;
+$consulta .= " ORDER BY Fecha DESC";
+echo $consulta;
 
 $resultado = $conexion->query($consulta);
 
