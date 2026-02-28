@@ -13,8 +13,8 @@ require "../componentes/clases/cliente.php";
 $filtroReservas = "";
 
 if (!empty($_POST['filtrar_reservas'])) {
-    if (!empty($_POST['filtro_reservas_nombre_usuario'])) {
-        $nombre_para_filtrar = $_POST['filtro_reservas_nombre_usuario'];
+    if (!empty($_POST['filtro_reservas_nombre_cliente'])) {
+        $nombre_para_filtrar = $_POST['filtro_reservas_nombre_cliente'];
         $filtroReservas = " WHERE Clientes.nombre LIKE '%$nombre_para_filtrar%'";
     }
 }
@@ -202,7 +202,6 @@ if (!empty($_POST['devolver'])) {
 <!-- VISTA -->
 <?php require('../componentes/header.php') ?>
 
-<h2>RESERVAS</h2>
 
 <div class="mensajeResultado">
     <?= (!$libroExiste && false) ? "<br><span class='textoError'>Libro no encontrado</span><br><br>" : '' ?>
@@ -212,32 +211,33 @@ if (!empty($_POST['devolver'])) {
     <?= (!$clienteExiste && false) ? "<br><span class='textoError'>Cliente no encontrado.</span><br><br>" : '' ?>
 </div>
 
-<form action="reservas.php" method="POST">
+<form action="reservas.php" method="POST" class="form_horizontal">
     <fieldset>
         <legend>
             <h4>Reservar libro o película</h4>
         </legend>
-        <label for="titulo_libro">Libro</label><input type="text" name="titulo_libro"></input><br><br>
-        <label for="titulo_pelicula">Pelicula</label><input type="text" name="titulo_pelicula"></input><br><br>
-        <label for="nombre_cliente">Nombre cliente</label><input type="text" name="nombre_cliente"></input><br><br>
-        <label for="apellidos_cliente">Apellidos cliente</label><input type="text" name="apellidos_cliente"></input><br><br>
-        <input type="submit" name="reservar" value="Reservar">
+        <label for="titulo_libro">Libro </label><input type="text" name="titulo_libro"></input>
+        <label for="titulo_pelicula">Pelicula </label><input type="text" name="titulo_pelicula"></input>
+        <label for="nombre_cliente">Nombre cliente </label><input type="text" name="nombre_cliente"></input>
+        <label for="apellidos_cliente">Apellidos cliente </label><input type="text" name="apellidos_cliente"></input>
+        <input type="submit" name="reservar" value="Reservar" class="formButton">
     </fieldset>
 </form>
 
-<form action="reservas.php" method="POST">
+<form action="reservas.php" method="POST" class="form_horizontal">
     <fieldset>
         <legend>
-            <h4>Filtrar reservas por usuario</h4>
+            <h4>Filtrar reservas por cliente</h4>
         </legend>
-        <label for="filtro_reservas_nombre_usuario">Introducir nombre de usuario</label><input type="text" name="filtro_reservas_nombre_usuario"></input><br><br>
-        <input type="submit" name="filtrar_reservas" value="Filtrar">
+        <label for="filtro_reservas_nombre_cliente">Nombre </label><input type="text" name="filtro_reservas_nombre_cliente"></input>
+        <label for="filtro_reservas_apellidos_cliente">Apellidos </label><input type="text" name="filtro_reservas_apellidos_cliente"></input>        
+        <input type="submit" name="filtrar_reservas" value="Filtrar" class="formButton">
     </fieldset>
 </form>
 
-<table class="catalogo">
+<table >
     <thead>
-        <tr class="cabecera">
+        <tr id="cabecera">
             <td class="id">
                 ID
             </td>
