@@ -51,6 +51,7 @@ CREATE TABLE Reservas (
     libro_id INT,
     pelicula_id INT,
     fecha DATE,
+    activa BOOLEAN DEFAULT TRUE,
     PRIMARY KEY (id),
     FOREIGN KEY (cliente_id) REFERENCES Clientes(id),
     FOREIGN KEY (libro_id) REFERENCES Libros(id),
@@ -107,7 +108,8 @@ LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
 (@nocargar, cliente_id, @libro_id, @pelicula_id, fecha)
 SET libro_id = NULLIF(@libro_id, ''),
-pelicula_id = NULLIF(@pelicula_id, '');
+    pelicula_id = NULLIF(@pelicula_id, ''),
+    activa = 1;
 
 
 LOAD DATA INFILE '/var/lib/mysql-files/Usuarios.csv'
