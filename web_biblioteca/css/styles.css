@@ -110,19 +110,18 @@ a:hover {
 
 
 
-/* catalogo */
-.catalogo thead {
+ thead {
     background-color: rgb(62, 15, 15);
     color: rgb(215, 180, 180);
 }
 
-.catalogo tr {
+ tr {
     border: 1px solid black;
     padding: 1em;
         min-height: 3em;
 }
 
-.catalogo td {
+ td {
     border-bottom: 1px solid black;
 
     padding-left: 1em;

@@ -40,25 +40,48 @@ while (true) {
     </fieldset>
 </form>
 
-<ul>
-    <?php foreach ($clientes as $cliente): ?>
 
-        <li>
-            <section class="datos_cliente">
-                <span>
-                    <?php echo $cliente->id ?>
-                </span>
-                <?php echo $cliente->nombre . " " . $cliente->apellidos; ?>
-            </section>
-            <section class="botones_li">
+<table>
+<thead>
+        <tr class="cabecera">
+            <td class="id">
+                Nª Cliente
+            </td>
+            <td class="nombre_cliente">
+                Nombre
+            </td>
+            <td class="apellidos_cliente">
+                Apellidos
+            </td>
+            <td class="editar">
+                Edición
+            </td>
+            <td class="eliminar">
+                Eliminación
+            </td>
+        </tr>
+    </thead>
+<?php foreach ($clientes as $cliente): ?>
+        <tr>
+            <td class="id">
+                <?php echo $cliente->id; ?>
+            </td>
+            <td class="nombre_cliente">
+                <?php echo $cliente->nombre; ?>
+            </td>
+            <td class="apellidos_cliente">
+                <?php echo $cliente->apellidos; ?>
+            </td>
+            <td class="editar">
                 <a href="clientes-editar.php?id=<?php echo $cliente->id ?>">EDITAR</a>
+            </td>
+            <td class="eliminar">
                 <a href="clientes-borrar.php?id=<?php echo $cliente->id ?>">BORRAR</a>
-            </section>
-        </li>
-
+            </td>
+        </tr>
     <?php endforeach; ?>
+</table>
 
-</ul>
 </body>
 
 </html>
