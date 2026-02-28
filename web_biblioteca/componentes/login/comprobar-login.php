@@ -1,4 +1,5 @@
 <?php
+    session_start();
 
     require "../config/conexion.php";
     require "../clases/usuario.php";
@@ -19,6 +20,8 @@
     $usuario = $resultado->fetch_object(Usuario::class);
 
     if($usuario != null && hash("sha256", $password) == $usuario->password){
+        $_SESSION['usuario_logeado'] = true;
+        
         header("Location: ../../reservas/reservas.php");
     }else {
         //crear mensaje de error

@@ -1,5 +1,10 @@
 <?php
 
+session_start();
+if ($_SESSION['usuario_logeado'] == false){
+    header("Location: ../index.php");
+}
+
 require "../componentes/config/conexion.php";
 require "../componentes/clases/cliente.php";
 
