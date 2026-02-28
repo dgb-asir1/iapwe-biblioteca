@@ -23,7 +23,6 @@ $consulta = "SELECT Reservas.*, Libros.titulo as titulo_libro,
     ";
 $consulta .= $filtroReservas;
 $consulta .= " ORDER BY Fecha DESC";
-echo $consulta;
 
 $resultado = $conexion->query($consulta);
 
