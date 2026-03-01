@@ -10,6 +10,8 @@ require "../componentes/config/conexion.php";
 require "../componentes/clases/reserva.php";
 require "../componentes/clases/cliente.php";
 
+
+
 // LISTADO RESERVAS
 $filtroReservas = "";
 $filtrarPorNombre = false;
@@ -20,23 +22,20 @@ if (!empty($_POST['filtrar_reservas'])) {
 
     if (!empty($_POST['filtro_reservas_nombre_cliente'])) {
         $filtrarPorNombre = true;
-        $nombre_para_filtrar = $_POST['filtro_reservas_nombre_cliente'];  
+        $nombre_para_filtrar = $_POST['filtro_reservas_nombre_cliente'];
     }
     if (!empty($_POST['filtro_reservas_apellidos_cliente'])) {
         $filtrarPorApellidos = true;
         $apellidos_para_filtrar = $_POST['filtro_reservas_apellidos_cliente'];
-    } 
+    }
 
-    if ($filtrarPorNombre && $filtrarPorApellidos){
+    if ($filtrarPorNombre && $filtrarPorApellidos) {
         $filtroReservas = " WHERE Clientes.nombre LIKE '%$nombre_para_filtrar%' AND Clientes.apellidos LIKE '%$apellidos_para_filtrar%' ";
-    }
-    else if ($filtrarPorNombre){
+    } else if ($filtrarPorNombre) {
         $filtroReservas = " WHERE Clientes.nombre LIKE '%$nombre_para_filtrar%' ";
-    }
-    else if ($filtrarPorApellidos){
+    } else if ($filtrarPorApellidos) {
         $filtroReservas = " WHERE Clientes.apellidos LIKE '%$apellidos_para_filtrar%' ";
     }
-    
 }
 
 $consulta = "SELECT Reservas.*, Libros.titulo as titulo_libro, Peliculas.titulo as titulo_pelicula,
@@ -65,11 +64,11 @@ while (true) {
 
 
 // RESERVAR
-$libroExiste = false;
-$peliculaExiste = false;
+$libroEncontrado = false;
+$peliculaEncontrada = false;
 $libroYaReservado = false;
 $peliculaYaReservada = false;
-$clienteExiste = false;
+$clienteEncontrado = false;
 $libro_id = null;
 $pelicula_id = null;
 
@@ -184,58 +183,58 @@ if (
         $libro = ObtenerLibro($conexion, $_POST["titulo"]);
         if ($libro !== null && $libro !== false) {
 
-            $libroExiste = true;
-            echo "el libro existe<br>";
+            $libroEncontrado = true;
 
             if (ComprobarReservaLibro($conexion, $libro["id"]) > 0) {
-                echo "el libro ya esta reservado<br>";
                 $libroYaReservado = true;
+                header("Location: reservas.php?libro_ya_reservado");
+                exit();
             } else {
                 echo "el libro no esta reservado<br>";
                 $libro_id = $libro["id"];
                 $libroYaReservado = false;
             }
         } else {
-            $libroExiste = false;
-            echo "el libro no existe<br>";
+            $libroEncontrado = false;
+            header("Location: reservas.php?libro_no_encontrado");
+            exit();
         }
     } else {
         $pelicula = ObtenerPelicula($conexion, $_POST["titulo"]);
         if ($pelicula !== null && $pelicula !== false) {
 
-            $peliculaExiste = true;
-            echo "la pelicula existe<br>";
-
+            $peliculaEncontrada = true;
 
             if (ComprobarReservaPelicula($conexion, $pelicula["id"]) > 0) {
-                echo "el pelicula ya esta reservada<br>";
                 $peliculaYaReservada = true;
+                header("Location: reservas.php?pelicula_ya_reservada");
+                exit();
             } else {
-                echo "la pelicula no esá reservada<br>";
                 $pelicula_id = $pelicula["id"];
                 $peliculaYaReservada = false;
             }
         } else {
-            $peliculaExiste = false;
-            echo "la pelicula no existe<br>";
+            $peliculaEncontrada = false;
+            header("Location: reservas.php?pelicula_no_encontrada");
+            exit();
         }
     }
 
     $cliente = ObtenerCliente($conexion, $_POST["nombre_cliente"], $_POST["apellidos_cliente"]);
     if ($cliente !== null && $cliente !== false) {
-        echo "el cliente existe<br>";
-        $clienteExiste = true;
+        $clienteEncontrado = true;
         $cliente_id = $cliente["id"];
     } else {
-        $clienteExiste = false;
-        echo "el cliente no existe<br>";
+        $clienteEncontrado = false;
+        header("Location: reservas.php?cliente_no_encontrado");
+        exit();
     }
 
 
 
     if (
-        (($libroExiste && !$libroYaReservado) || ($peliculaExiste && !$peliculaYaReservada))
-        && ($clienteExiste)
+        (($libroEncontrado && !$libroYaReservado) || ($peliculaEncontrada && !$peliculaYaReservada))
+        && ($clienteEncontrado)
     ) {
         echo "preparados para efectuar reserva<br>";
         EfectuarReserva($conexion, $libro_id, $pelicula_id, $cliente_id);
@@ -270,7 +269,13 @@ if (!empty($_POST['devolver'])) {
 <?php require('../componentes/header.php') ?>
 
 
-
+<div class="mensajeResultado">
+    <?= (isset($_GET["libro_no_encontrado"])) ? "<br><span class='textoError'>Libro no encontrado</span><br><br>" : '' ?>
+    <?= (isset($_GET["libro_ya_reservado"])) ? "<br><span class='textoError'>Libro ya reservado</span><br><br>" : '' ?>
+    <?= (isset($_GET["pelicula_no_encontrada"])) ? "<br><span class='textoError'>Película no encontrada</span><br><br>" : '' ?>
+    <?= (isset($_GET["pelicula_ya_reservada"])) ? "<br><span class='textoError'>Película ya reservada</span><br><br>" : '' ?>
+    <?= (isset($_GET["cliente_no_encontrado"])) ? "<br><span class='textoError'>Cliente no encontrado</span><br><br>" : '' ?>
+</div>
 
 <form action="reservas.php" method="POST" class="form_horizontal">
     <fieldset>
@@ -280,6 +285,17 @@ if (!empty($_POST['devolver'])) {
         <label for="tipo_reserva">Libro</label><input type="radio" name="tipo_reserva" value="libro">
         <label for="tipo_reserva">Película</label><input type="radio" name="tipo_reserva" value="pelicula">
         <label for="titulo">Título </label><input type="text" name="titulo"></input>
+        <select name="titulo">
+            <?php
+            $consulta = "SELECT id,titulo FROM Libros ";
+            $sentencia = $conexion->prepare($consulta);
+            $sentencia->execute();
+            $resultado = $sentencia->get_result();
+            while ($fila = $resultado->fetch_assoc()) {
+                echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['titulo'] . "</option>";
+            }
+            ?>
+        </select>
         <label for="nombre_cliente">Nombre cliente </label><input type="text" name="nombre_cliente"></input>
         <label for="apellidos_cliente">Apellidos cliente </label><input type="text" name="apellidos_cliente"></input>
         <input type="submit" name="reservar" value="Reservar" class="formButton">
