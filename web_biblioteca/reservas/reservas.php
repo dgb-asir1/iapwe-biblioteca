@@ -298,7 +298,7 @@ if (!empty($_POST['devolver'])) {
             <td class="devolver">
                 <form action="reservas.php" method="POST">
                     <input type="hidden" name="id_reserva_a_cancelar" value="<?php echo $reserva->id; ?>">
-                    <input type="submit" name="devolver" value="Devolver">
+                    <input type="submit" name="devolver" value="Devolver" class="tableButton">
                 </form>
             </td>
         </tr>

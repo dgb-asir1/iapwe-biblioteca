@@ -76,10 +76,10 @@ while (true) {
                 <?php echo $cliente->apellidos; ?>
             </td>
             <td class="editar">
-                <a href="clientes-editar.php?id=<?php echo $cliente->id ?>">Editar</a>
+                <a href="clientes-editar.php?id=<?php echo $cliente->id ?>" class="tableButton">Editar</a>
             </td>
             <td class="eliminar">
-                <a href="clientes-borrar.php?id=<?php echo $cliente->id ?>">Eliminar</a>
+                <a href="clientes-borrar.php?id=<?php echo $cliente->id ?>" class="tableButton">Eliminar</a>
             </td>
         </tr>
     <?php endforeach; ?>
