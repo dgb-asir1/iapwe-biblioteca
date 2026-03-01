@@ -82,8 +82,6 @@ a:hover,
     color: var(--morado1);
 }
 
-
-
 form {
     border-radius: 0.3em;
 }
@@ -139,7 +137,7 @@ tr:nth-child(odd) {
 }
 
 tr:hover {
-    background-color: var(--naranja3);
+    background-color: var(--naranja2);
     color: var(--morado6);
 }
 
