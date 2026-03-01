@@ -12,12 +12,31 @@ require "../componentes/clases/cliente.php";
 
 // LISTADO RESERVAS
 $filtroReservas = "";
+$filtrarPorNombre = false;
+$filtrarPorApellidos = false;
+
 
 if (!empty($_POST['filtrar_reservas'])) {
+
     if (!empty($_POST['filtro_reservas_nombre_cliente'])) {
-        $nombre_para_filtrar = $_POST['filtro_reservas_nombre_cliente'];
-        $filtroReservas = " WHERE Clientes.nombre LIKE '%$nombre_para_filtrar%'";
+        $filtrarPorNombre = true;
+        $nombre_para_filtrar = $_POST['filtro_reservas_nombre_cliente'];  
     }
+    if (!empty($_POST['filtro_reservas_apellidos_cliente'])) {
+        $filtrarPorApellidos = true;
+        $apellidos_para_filtrar = $_POST['filtro_reservas_apellidos_cliente'];
+    } 
+
+    if ($filtrarPorNombre && $filtrarPorApellidos){
+        $filtroReservas = " WHERE Clientes.nombre LIKE '%$nombre_para_filtrar%' AND Clientes.apellidos LIKE '%$apellidos_para_filtrar%' ";
+    }
+    else if ($filtrarPorNombre){
+        $filtroReservas = " WHERE Clientes.nombre LIKE '%$nombre_para_filtrar%' ";
+    }
+    else if ($filtrarPorApellidos){
+        $filtroReservas = " WHERE Clientes.apellidos LIKE '%$apellidos_para_filtrar%' ";
+    }
+    
 }
 
 $consulta = "SELECT Reservas.*, Libros.titulo as titulo_libro, Peliculas.titulo as titulo_pelicula,
