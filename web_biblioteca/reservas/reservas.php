@@ -19,7 +19,7 @@ if (!empty($_POST['filtrar_reservas'])) {
     }
 }
 
-$consulta = "SELECT Reservas.*, Libros.titulo as titulo_libro,
+$consulta = "SELECT Reservas.*, Libros.titulo as titulo_libro, Peliculas.titulo as titulo_pelicula,
     Clientes.nombre as nombre_cliente, Clientes.apellidos as apellidos_cliente
     FROM Reservas
     LEFT JOIN Libros ON Reservas.libro_id = Libros.id
@@ -76,11 +76,11 @@ function ObtenerLibro($conexion, $titulo_libro)
 
 function ObtenerPelicula($conexion, $titulo_pelicula)
 {
-    $consulta = "SELECT Peliculas.id FROM Peliculas WHERE Peliculas.titulo = ?";
+    $consulta = "SELECT Peliculas.id, Reservas.activa as reserva FROM Peliculas LEFT JOIN Reservas on Peliculas.id = Reservas.pelicula_id WHERE Peliculas.titulo = ?";
     $sentencia = $conexion->prepare($consulta);
     $sentencia->bind_param("s", $titulo_pelicula);
     $sentencia->execute();
-    $pelicula = $sentencia->POST_result()->fetch_assoc();
+    $pelicula = $sentencia->get_result()->fetch_assoc();
     return ($pelicula);
 }
 
@@ -160,10 +160,21 @@ if (
     } else {
         $pelicula = ObtenerPelicula($conexion, $_POST["titulo"]);
         if ($pelicula !== false) {
+
             $peliculaExiste = true;
-            $pelicula_id = $pelicula["id"];
+            echo "el pelicula existe<br>";
+
+            if ($pelicula["reserva"] == 1) {
+                echo "el pelicula ya esta reservada<br>";
+                $peliculaYaReservada = true;
+            } else {
+                echo "la pelicula no esá reservada<br>";
+                $pelicula_id = $pelicula["id"];
+                $peliculaYaReservada = false;
+            }
         } else {
             $peliculaExiste = false;
+            echo "la pelicula no existe<br>";
         }
     }
 
@@ -216,13 +227,7 @@ if (!empty($_POST['devolver'])) {
 <?php require('../componentes/header.php') ?>
 
 
-<div class="mensajeResultado">
-    <?= (!$libroExiste && false) ? "<br><span class='textoError'>Libro no encontrado</span><br><br>" : '' ?>
-    <?= (!$peliculaExiste && false) ? "<br><span class='textoError'>Película no encontrado</span><br><br>" : '' ?>
-    <?= ($libroYaReservado && false) ? "<br><span class='textoError'>Libro ya reservado.</span><br><br>" : '' ?>
-    <?= ($peliculaYaReservada && false) ? "<br><span class='textoError'>Película ya reservada.</span><br><br>" : '' ?>
-    <?= (!$clienteExiste && false) ? "<br><span class='textoError'>Cliente no encontrado.</span><br><br>" : '' ?>
-</div>
+
 
 <form action="reservas.php" method="POST" class="form_horizontal">
     <fieldset>
@@ -278,19 +283,20 @@ if (!empty($_POST['devolver'])) {
     <?php foreach ($reservas as $reserva): ?>
         <tr>
             <td class="id">
-                <?php echo $reserva->id; ?>
+                <?= ($reserva->id !== null) ? $reserva->id : '' ?>
             </td>
             <td class="titulo">
-                <?php echo $reserva->titulo_libro; ?>
+                <?= ($reserva->titulo_libro !== null) ? $reserva->titulo_libro : '' ?>
+                <?= ($reserva->titulo_pelicula !== null) ? $reserva->titulo_pelicula : '' ?>
             </td>
             <td class="nombre_cliente">
-                <?php echo $reserva->nombre_cliente; ?>
+                <?= ($reserva->nombre_cliente !== null) ? $reserva->nombre_cliente : '' ?>
             </td>
             <td class="apellidos_cliente">
-                <?php echo $reserva->apellidos_cliente; ?>
+                <?= ($reserva->apellidos_cliente !== null) ? $reserva->apellidos_cliente : '' ?>
             </td>
             <td class="fecha">
-                <?php echo $reserva->fecha; ?>
+                <?= ($reserva->fecha !== null) ? $reserva->fecha : '' ?>
             </td>
             <td class="activa">
                 <?= ($reserva->activa == 1) ? "Sí" : 'No' ?>
