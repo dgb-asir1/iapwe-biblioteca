@@ -27,7 +27,7 @@ $consulta = "SELECT Reservas.*, Libros.titulo as titulo_libro,
     INNER JOIN Clientes ON Reservas.cliente_id = Clientes.id
     ";
 $consulta .= $filtroReservas;
-$consulta .= " ORDER BY Fecha DESC";
+$consulta .= " ORDER BY Fecha DESC, id DESC";
 
 $resultado = $conexion->query($consulta);
 
