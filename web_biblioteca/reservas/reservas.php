@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-if ($_SESSION['usuario_logeado'] == false){
+if ($_SESSION['usuario_logeado'] == false) {
     header("Location: ../index.php");
 }
 
@@ -66,7 +66,7 @@ function ObtenerCliente($conexion, $nombre_cliente, $apellidos_cliente)
 
 function ObtenerLibro($conexion, $titulo_libro)
 {
-    $consulta = "SELECT Libros.id, Reservas.id as reserva FROM Libros LEFT JOIN Reservas on Libros.id = Reservas.libro_id WHERE Libros.titulo = ? ";
+    $consulta = "SELECT Libros.id, Reservas.activa as reserva FROM Libros LEFT JOIN Reservas on Libros.id = Reservas.libro_id WHERE Libros.titulo = ? ";
     $sentencia = $conexion->prepare($consulta);
     $sentencia->bind_param("s", $titulo_libro);
     $sentencia->execute();
@@ -94,61 +94,71 @@ function EfectuarReserva($conexion, $libro_id, $pelicula_id, $cliente_id)
 
     $sentencia->bind_param("iiis", $cliente_id, $libro_id, $pelicula_id, $fecha);
     $sentencia->execute();
+
+    // INTENTANDO EVITAR QUE SE VUELVAN A CREAR RESERVAS SALTANDO TODA LA LÓGICA
+    header("Location: reservas.php");
+    exit();
 }
 
 if (
-    isset($_POST["reservar"])){
-        echo "reservar is set<br>";
-    }
+    isset($_POST["reservar"])
+) {
+    echo "reservar is set<br>";
+}
 if (
-    !empty($_POST["reservar"])){
+    !empty($_POST["reservar"])
+) {
     echo "reservar is not empty!<br>";
-    };
+};
 
 if (
-    isset($_POST["titulo_libro"])){
-        echo "titulo_libro is set<br>";
-    }
+    isset($_POST["titulo_libro"])
+) {
+    echo "titulo_libro is set<br>";
+}
 if (
-    !empty($_POST["titulo_libro"])){
+    !empty($_POST["titulo_libro"])
+) {
     echo "titulo_libro is not empty!<br>";
-    };
+};
 if (
-    isset($_POST["nombre_cliente"])){
-        echo "nombre_cliente is set<br>";
-    }
+    isset($_POST["nombre_cliente"])
+) {
+    echo "nombre_cliente is set<br>";
+}
 if (
-    !empty($_POST["nombre_cliente"])){
+    !empty($_POST["nombre_cliente"])
+) {
     echo "nombre_cliente is not empty!<br>";
-    };    
+};
 
 if (
-    isset($_POST["reservar"]) && (!empty($_POST["titulo_libro"]) || !empty($_POST["titulo_pelicula"]))
+    isset($_POST["reservar"]) &&  (!empty($_POST["tipo_reserva"])) && (!empty($_POST["titulo"]))
     && !empty($_POST["nombre_cliente"]) && !empty($_POST["apellidos_cliente"])
 ) {
     echo "Vamos a reservar algo !!!!!!!!!!!!";
-    // SI HEMOS METIDO UN LIBRO IGNORAMOS LA PELÍCULA
-    if (!empty($_POST["titulo_libro"])) {
-        $libro = ObtenerLibro($conexion, $_POST["titulo_libro"]);
+
+    if (($_POST["tipo_reserva"] == 'libro')) {
+        $libro = ObtenerLibro($conexion, $_POST["titulo"]);
         if ($libro !== false) {
 
             $libroExiste = true;
             echo "el libro existe<br>";
 
-            if ($libro["reserva"] !== null) {
+            if ($libro["reserva"] == 1) {
                 echo "el libro ya esta reservado<br>";
                 $libroYaReservado = true;
             } else {
                 echo "el libro no esta reservado<br>";
                 $libro_id = $libro["id"];
+                $libroYaReservado = false;
             }
-            
         } else {
             $libroExiste = false;
             echo "el libro no existe<br>";
         }
     } else {
-        $pelicula = ObtenerPelicula($conexion, $_POST["titulo_pelicula"]);
+        $pelicula = ObtenerPelicula($conexion, $_POST["titulo"]);
         if ($pelicula !== false) {
             $peliculaExiste = true;
             $pelicula_id = $pelicula["id"];
@@ -190,6 +200,9 @@ function CancelarReserva($conexion, $id_reserva)
 
     $sentencia->bind_param("i", $id_reserva);
     $sentencia->execute();
+
+    header("Location: reservas.php");
+    exit();
 }
 
 if (!empty($_POST['devolver'])) {
@@ -216,8 +229,9 @@ if (!empty($_POST['devolver'])) {
         <legend>
             <h4>Reservar libro o película</h4>
         </legend>
-        <label for="titulo_libro">Libro </label><input type="text" name="titulo_libro"></input>
-        <label for="titulo_pelicula">Pelicula </label><input type="text" name="titulo_pelicula"></input>
+        <label for="tipo_reserva">Libro</label><input type="radio" name="tipo_reserva" value="libro">
+        <label for="tipo_reserva">Película</label><input type="radio" name="tipo_reserva" value="pelicula">
+        <label for="titulo">Título </label><input type="text" name="titulo"></input>
         <label for="nombre_cliente">Nombre cliente </label><input type="text" name="nombre_cliente"></input>
         <label for="apellidos_cliente">Apellidos cliente </label><input type="text" name="apellidos_cliente"></input>
         <input type="submit" name="reservar" value="Reservar" class="formButton">
@@ -230,12 +244,12 @@ if (!empty($_POST['devolver'])) {
             <h4>Filtrar reservas por cliente</h4>
         </legend>
         <label for="filtro_reservas_nombre_cliente">Nombre </label><input type="text" name="filtro_reservas_nombre_cliente"></input>
-        <label for="filtro_reservas_apellidos_cliente">Apellidos </label><input type="text" name="filtro_reservas_apellidos_cliente"></input>        
+        <label for="filtro_reservas_apellidos_cliente">Apellidos </label><input type="text" name="filtro_reservas_apellidos_cliente"></input>
         <input type="submit" name="filtrar_reservas" value="Filtrar" class="formButton">
     </fieldset>
 </form>
 
-<table >
+<table>
     <thead>
         <tr id="cabecera">
             <td class="id">
