@@ -1,5 +1,10 @@
 <?php
 
+$mostrarError = "";
+if(isset($_GET["error"]) && ($_GET["error"] == 1)){
+    $mostrarError = true;
+}
+
 ?>
 
 <head>
@@ -18,5 +23,5 @@
         <br><br>
         <input type="submit" value="Iniciar sesión">
     </form>
-
+    <?= ($mostrarError) ? '<p class="textoError">Credenciales inválidas</p>' : '' ?>
 </html>

@@ -25,7 +25,7 @@
         header("Location: ../../reservas/reservas.php");
     }else {
         //crear mensaje de error
-        header("Location: ../index.php");
+        header("Location: ../../index.php?error=1");
     }
 
 
