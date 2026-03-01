@@ -3,6 +3,7 @@
 session_start();
 if ($_SESSION['usuario_logeado'] == false) {
     header("Location: ../index.php");
+    exit();
 }
 
 require "../componentes/config/conexion.php";
@@ -54,6 +55,47 @@ $libro_id = null;
 $pelicula_id = null;
 
 
+function ObtenerLibro($conexion, $titulo_libro)
+{
+    $consulta = "SELECT id FROM Libros WHERE titulo = ? ";
+    $sentencia = $conexion->prepare($consulta);
+    $sentencia->bind_param("s", $titulo_libro);
+    $sentencia->execute();
+    $libro = $sentencia->get_result()->fetch_assoc();
+    return ($libro);
+}
+
+function ObtenerPelicula($conexion, $titulo_pelicula)
+{
+    $consulta = "SELECT id FROM Peliculas WHERE titulo = ? ";
+    $sentencia = $conexion->prepare($consulta);
+    $sentencia->bind_param("s", $titulo_pelicula);
+    $sentencia->execute();
+    $pelicula = $sentencia->get_result()->fetch_assoc();
+    return ($pelicula);
+}
+
+function ComprobarReservaLibro($conexion, $id_libro)
+{
+    $consulta = "SELECT COUNT(*) as cantidad_reservas_activas FROM Reservas WHERE libro_id = ? AND activa = 1";
+    $sentencia = $conexion->prepare($consulta);
+    $sentencia->bind_param("i", $id_libro);
+    $sentencia->execute();
+    $resultado = $sentencia->get_result()->fetch_assoc();
+    return $resultado["cantidad_reservas_activas"];
+}
+
+function ComprobarReservaPelicula($conexion, $id_pelicula)
+{
+    $consulta = "SELECT COUNT(*) as cantidad_reservas_activas FROM Reservas WHERE pelicula_id = ? AND activa = 1";
+    $sentencia = $conexion->prepare($consulta);
+    $sentencia->bind_param("i", $id_pelicula);
+    $sentencia->execute();
+    $resultado = $sentencia->get_result()->fetch_assoc();
+    return $resultado["cantidad_reservas_activas"];
+}
+
+
 function ObtenerCliente($conexion, $nombre_cliente, $apellidos_cliente)
 {
     $consulta = "SELECT Clientes.id FROM Clientes WHERE Clientes.nombre = ? AND Clientes.apellidos = ?";
@@ -64,25 +106,6 @@ function ObtenerCliente($conexion, $nombre_cliente, $apellidos_cliente)
     return ($cliente);
 }
 
-function ObtenerLibro($conexion, $titulo_libro)
-{
-    $consulta = "SELECT Libros.id, Reservas.activa as reserva FROM Libros LEFT JOIN Reservas on Libros.id = Reservas.libro_id WHERE Libros.titulo = ? ";
-    $sentencia = $conexion->prepare($consulta);
-    $sentencia->bind_param("s", $titulo_libro);
-    $sentencia->execute();
-    $libro = $sentencia->get_result()->fetch_assoc();
-    return ($libro);
-}
-
-function ObtenerPelicula($conexion, $titulo_pelicula)
-{
-    $consulta = "SELECT Peliculas.id, Reservas.activa as reserva FROM Peliculas LEFT JOIN Reservas on Peliculas.id = Reservas.pelicula_id WHERE Peliculas.titulo = ?";
-    $sentencia = $conexion->prepare($consulta);
-    $sentencia->bind_param("s", $titulo_pelicula);
-    $sentencia->execute();
-    $pelicula = $sentencia->get_result()->fetch_assoc();
-    return ($pelicula);
-}
 
 function EfectuarReserva($conexion, $libro_id, $pelicula_id, $cliente_id)
 {
@@ -140,12 +163,12 @@ if (
 
     if (($_POST["tipo_reserva"] == 'libro')) {
         $libro = ObtenerLibro($conexion, $_POST["titulo"]);
-        if ($libro !== false) {
+        if ($libro !== null && $libro !== false) {
 
             $libroExiste = true;
             echo "el libro existe<br>";
 
-            if ($libro["reserva"] == 1) {
+            if (ComprobarReservaLibro($conexion, $libro["id"]) > 0) {
                 echo "el libro ya esta reservado<br>";
                 $libroYaReservado = true;
             } else {
@@ -159,12 +182,13 @@ if (
         }
     } else {
         $pelicula = ObtenerPelicula($conexion, $_POST["titulo"]);
-        if ($pelicula !== false) {
+        if ($pelicula !== null && $pelicula !== false) {
 
             $peliculaExiste = true;
-            echo "el pelicula existe<br>";
+            echo "la pelicula existe<br>";
 
-            if ($pelicula["reserva"] == 1) {
+
+            if (ComprobarReservaPelicula($conexion, $pelicula["id"]) > 0) {
                 echo "el pelicula ya esta reservada<br>";
                 $peliculaYaReservada = true;
             } else {
@@ -179,7 +203,7 @@ if (
     }
 
     $cliente = ObtenerCliente($conexion, $_POST["nombre_cliente"], $_POST["apellidos_cliente"]);
-    if ($cliente !== null) {
+    if ($cliente !== null && $cliente !== false) {
         echo "el cliente existe<br>";
         $clienteExiste = true;
         $cliente_id = $cliente["id"];
