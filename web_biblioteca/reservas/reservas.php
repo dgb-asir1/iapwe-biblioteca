@@ -284,20 +284,44 @@ if (!empty($_POST['devolver'])) {
         </legend>
         <label for="tipo_reserva">Libro</label><input type="radio" name="tipo_reserva" value="libro">
         <label for="tipo_reserva">Película</label><input type="radio" name="tipo_reserva" value="pelicula">
-        <label for="titulo">Título </label><input type="text" name="titulo"></input>
-        <select name="titulo">
+        <br>
+        <select name="titulo_libro">
+            <option value="" disabled selected>Escoger libro</option>
             <?php
-            $consulta = "SELECT id,titulo FROM Libros ";
+            $consulta = "SELECT Libros.id, Libros.titulo, Autores.autor, Reservas.libro_id, Reservas.activa FROM Libros LEFT JOIN Reservas on Libros.id = Reservas.libro_id 
+            INNER JOIN Autores ON Libros.autor_id = Autores.id WHERE Reservas.id IS NULL OR Reservas.activa = 0";
             $sentencia = $conexion->prepare($consulta);
             $sentencia->execute();
             $resultado = $sentencia->get_result();
             while ($fila = $resultado->fetch_assoc()) {
-                echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['titulo'] . "</option>";
+                echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['titulo'] . " (" .$fila['autor'] .")" . "</option>";
             }
             ?>
-        </select>
-        <label for="nombre_cliente">Nombre cliente </label><input type="text" name="nombre_cliente"></input>
-        <label for="apellidos_cliente">Apellidos cliente </label><input type="text" name="apellidos_cliente"></input>
+        </select><br>
+        <select name="titulo_pelicula">
+            <option value="" disabled selected>Escoger película</option>
+            <?php
+            $consulta = "SELECT Peliculas.id, Peliculas.titulo, Peliculas.director, Reservas.pelicula_id, Reservas.activa FROM Peliculas LEFT JOIN Reservas on Peliculas.id = Reservas.pelicula_id WHERE Reservas.id IS NULL OR Reservas.activa = 0";
+            $sentencia = $conexion->prepare($consulta);
+            $sentencia->execute();
+            $resultado = $sentencia->get_result();
+            while ($fila = $resultado->fetch_assoc()) {
+                echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['titulo'] . " (" .$fila['director'] .")" . "</option>";
+            }
+            ?>
+        </select>        
+        <select name="cliente">
+            <option value="" disabled selected>Escoger cliente</option>
+            <?php
+            $consulta = "SELECT id, nombre, apellidos from Clientes";
+            $sentencia = $conexion->prepare($consulta);
+            $sentencia->execute();
+            $resultado = $sentencia->get_result();
+            while ($fila = $resultado->fetch_assoc()) {
+                echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['nombre'] . " " .$fila['apellidos'] . "</option>";
+            }
+            ?>
+        </select> 
         <input type="submit" name="reservar" value="Reservar" class="formButton">
     </fieldset>
 </form>
