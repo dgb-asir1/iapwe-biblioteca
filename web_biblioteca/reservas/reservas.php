@@ -64,65 +64,14 @@ while (true) {
 
 
 // RESERVAR
-$libroEncontrado = false;
-$peliculaEncontrada = false;
-$libroYaReservado = false;
-$peliculaYaReservada = false;
-$clienteEncontrado = false;
 $libro_id = null;
 $pelicula_id = null;
 
 
-function ObtenerLibro($conexion, $titulo_libro)
-{
-    $consulta = "SELECT id FROM Libros WHERE titulo = ? ";
-    $sentencia = $conexion->prepare($consulta);
-    $sentencia->bind_param("s", $titulo_libro);
-    $sentencia->execute();
-    $libro = $sentencia->get_result()->fetch_assoc();
-    return ($libro);
-}
-
-function ObtenerPelicula($conexion, $titulo_pelicula)
-{
-    $consulta = "SELECT id FROM Peliculas WHERE titulo = ? ";
-    $sentencia = $conexion->prepare($consulta);
-    $sentencia->bind_param("s", $titulo_pelicula);
-    $sentencia->execute();
-    $pelicula = $sentencia->get_result()->fetch_assoc();
-    return ($pelicula);
-}
-
-function ComprobarReservaLibro($conexion, $id_libro)
-{
-    $consulta = "SELECT COUNT(*) as cantidad_reservas_activas FROM Reservas WHERE libro_id = ? AND activa = 1";
-    $sentencia = $conexion->prepare($consulta);
-    $sentencia->bind_param("i", $id_libro);
-    $sentencia->execute();
-    $resultado = $sentencia->get_result()->fetch_assoc();
-    return $resultado["cantidad_reservas_activas"];
-}
-
-function ComprobarReservaPelicula($conexion, $id_pelicula)
-{
-    $consulta = "SELECT COUNT(*) as cantidad_reservas_activas FROM Reservas WHERE pelicula_id = ? AND activa = 1";
-    $sentencia = $conexion->prepare($consulta);
-    $sentencia->bind_param("i", $id_pelicula);
-    $sentencia->execute();
-    $resultado = $sentencia->get_result()->fetch_assoc();
-    return $resultado["cantidad_reservas_activas"];
-}
 
 
-function ObtenerCliente($conexion, $nombre_cliente, $apellidos_cliente)
-{
-    $consulta = "SELECT Clientes.id FROM Clientes WHERE Clientes.nombre = ? AND Clientes.apellidos = ?";
-    $sentencia = $conexion->prepare($consulta);
-    $sentencia->bind_param("ss", $nombre_cliente, $apellidos_cliente);
-    $sentencia->execute();
-    $cliente = $sentencia->get_result()->fetch_assoc();
-    return ($cliente);
-}
+
+
 
 
 function EfectuarReserva($conexion, $libro_id, $pelicula_id, $cliente_id)
@@ -141,41 +90,11 @@ function EfectuarReserva($conexion, $libro_id, $pelicula_id, $cliente_id)
     exit();
 }
 
-if (
-    isset($_POST["reservar"])
-) {
-    echo "reservar is set<br>";
-}
-if (
-    !empty($_POST["reservar"])
-) {
-    echo "reservar is not empty!<br>";
-};
+
 
 if (
-    isset($_POST["titulo_libro"])
-) {
-    echo "titulo_libro is set<br>";
-}
-if (
-    !empty($_POST["titulo_libro"])
-) {
-    echo "titulo_libro is not empty!<br>";
-};
-if (
-    isset($_POST["nombre_cliente"])
-) {
-    echo "nombre_cliente is set<br>";
-}
-if (
-    !empty($_POST["nombre_cliente"])
-) {
-    echo "nombre_cliente is not empty!<br>";
-};
-
-if (
-    isset($_POST["reservar"]) &&  (!empty($_POST["tipo_reserva"])) && (!empty($_POST["titulo"]))
-    && !empty($_POST["nombre_cliente"]) && !empty($_POST["apellidos_cliente"])
+    ((!empty($_POST["reservar_libro"])) || (!empty($_POST["reservar_pelicula"])))
+    && !empty($_POST["id_cliente"]) 
 ) {
     echo "Vamos a reservar algo !!!!!!!!!!!!";
 
@@ -280,12 +199,9 @@ if (!empty($_POST['devolver'])) {
 <form action="reservas.php" method="POST" class="form_horizontal">
     <fieldset>
         <legend>
-            <h4>Reservar libro o película</h4>
+            <h4>Reservar libro </h4>
         </legend>
-        <label for="tipo_reserva">Libro</label><input type="radio" name="tipo_reserva" value="libro">
-        <label for="tipo_reserva">Película</label><input type="radio" name="tipo_reserva" value="pelicula">
-        <br>
-        <select name="titulo_libro">
+        <select name="titulo_libro" class="select_titulos">
             <option value="" disabled selected>Escoger libro</option>
             <?php
             $consulta = "SELECT Libros.id, Libros.titulo, Autores.autor, Reservas.libro_id, Reservas.activa FROM Libros LEFT JOIN Reservas on Libros.id = Reservas.libro_id 
@@ -297,8 +213,29 @@ if (!empty($_POST['devolver'])) {
                 echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['titulo'] . " (" .$fila['autor'] .")" . "</option>";
             }
             ?>
-        </select><br>
-        <select name="titulo_pelicula">
+        </select>
+        <select name="cliente">
+            <option value="" disabled selected>Escoger cliente</option>
+            <?php
+            $consulta = "SELECT id, nombre, apellidos from Clientes";
+            $sentencia = $conexion->prepare($consulta);
+            $sentencia->execute();
+            $resultado = $sentencia->get_result();
+            while ($fila = $resultado->fetch_assoc()) {
+                echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['nombre'] . " " .$fila['apellidos'] . "</option>";
+            }
+            ?>
+        </select> 
+        <input type="submit" name="reservar" value="Reservar" class="formButton">
+    </fieldset>
+</form>
+
+<form action="reservas.php" method="POST" class="form_horizontal">
+    <fieldset>
+        <legend>
+            <h4>Reservar película</h4>
+        </legend>
+        <select name="titulo_pelicula" class="select_titulos">
             <option value="" disabled selected>Escoger película</option>
             <?php
             $consulta = "SELECT Peliculas.id, Peliculas.titulo, Peliculas.director, Reservas.pelicula_id, Reservas.activa FROM Peliculas LEFT JOIN Reservas on Peliculas.id = Reservas.pelicula_id WHERE Reservas.id IS NULL OR Reservas.activa = 0";
@@ -331,8 +268,18 @@ if (!empty($_POST['devolver'])) {
         <legend>
             <h4>Filtrar reservas por cliente</h4>
         </legend>
-        <label for="filtro_reservas_nombre_cliente">Nombre </label><input type="text" name="filtro_reservas_nombre_cliente"></input>
-        <label for="filtro_reservas_apellidos_cliente">Apellidos </label><input type="text" name="filtro_reservas_apellidos_cliente"></input>
+        <select name="filtro_cliente">
+            <option value="" disabled selected>Escoger cliente</option>
+            <?php
+            $consulta = "SELECT Clientes.id, Clientes.nombre, Clientes.apellidos FROM Clientes INNER JOIN Reservas ON Clientes.id = Reservas.cliente_id";
+            $sentencia = $conexion->prepare($consulta);
+            $sentencia->execute();
+            $resultado = $sentencia->get_result();
+            while ($fila = $resultado->fetch_assoc()) {
+                echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['nombre'] . " " .$fila['apellidos'] . "</option>";
+            }
+            ?>
+        </select> 
         <input type="submit" name="filtrar_reservas" value="Filtrar" class="formButton">
     </fieldset>
 </form>

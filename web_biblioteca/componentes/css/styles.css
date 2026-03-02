@@ -93,7 +93,7 @@ form {
     width: max-content;
     vertical-align: middle;
     padding-right: 1em;
-    box-shadow: 1px 1px 4px var(--morado2);
+    box-shadow: 1px 1px 4px var(--morado3);
     margin-bottom: 2em;
 }
 
@@ -104,6 +104,11 @@ form {
 .form_horizontal input:last-child {
     margin-left: 6em;
     margin-right: 1em;
+}
+
+.select_titulos {
+  min-width: 40em;
+  margin-right: 2em;
 }
 
 fieldset {
@@ -256,6 +261,10 @@ table .eliminar {
 }
 
 /* TABLA RESERVAS */
+table .activa {
+    text-align: center;
+}
+
 table .devolver form {
     margin: 0;
 }
