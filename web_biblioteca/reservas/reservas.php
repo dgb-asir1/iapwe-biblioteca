@@ -211,6 +211,9 @@ if (!empty($_POST['cancelar'])) {
             <td class="titulo">
                 Título
             </td>
+            <td class="tipo">
+                Tipo
+            </td>
             <td class="nombre_cliente">
                 Nombre cliente
             </td>
@@ -237,6 +240,10 @@ if (!empty($_POST['cancelar'])) {
                 <?= ($reserva->titulo_libro !== null) ? $reserva->titulo_libro : '' ?>
                 <?= ($reserva->titulo_pelicula !== null) ? $reserva->titulo_pelicula : '' ?>
             </td>
+            <td class="tipo">
+                <?= ($reserva->titulo_libro !== null) ? "<img src='../componentes/img/iconos/libro.png'>" : '' ?>
+                <?= ($reserva->titulo_pelicula !== null) ? "<img src='../componentes/img/iconos/pelicula.png'>" : '' ?>
+            </td>            
             <td class="nombre_cliente">
                 <?= ($reserva->nombre_cliente !== null) ? $reserva->nombre_cliente : '' ?>
             </td>

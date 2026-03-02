@@ -3,10 +3,19 @@
 </head>
 
 <body>
-    <h1>BIBLIOTECA IAPWE</h1>
+    <h1>Biblioteca IAPWE</h1>
     <nav>
-        <a href="../reservas/reservas.php" <?= basename($_SERVER['PHP_SELF']) == 'reservas.php' ? 'class="selected"' : '' ?>> RESERVAS</a>        
-        <a href="../catalogo/catalogo.php" <?= basename($_SERVER['PHP_SELF']) == 'catalogo.php' ? 'class="selected"' : '' ?>>CATÁLOGO</a>
-        <a href="../clientes/clientes-listado.php" <?= basename($_SERVER['PHP_SELF']) == 'clientes-listado.php' ? 'class="selected"' : '' ?>>CLIENTES</a>
+        <a href="../reservas/reservas.php" <?= basename($_SERVER['PHP_SELF']) == 'reservas.php' ? 'class="selected"' : '' ?>>
+            <img src="../componentes/img/iconos/reserva.png">
+            RESERVAS
+        </a>
+        <a href="../catalogo/catalogo.php" <?= basename($_SERVER['PHP_SELF']) == 'catalogo.php' ? 'class="selected"' : '' ?>>
+            <img src="../componentes/img/iconos/catalogo.png">
+            CATÁLOGO
+        </a>
+        <a href="../clientes/clientes-listado.php" <?= basename($_SERVER['PHP_SELF']) == 'clientes-listado.php' ? 'class="selected"' : '' ?>>
+            <img src="../componentes/img/iconos/clientes.png">
+            CLIENTES
+        </a>
     </nav>
     <br>
