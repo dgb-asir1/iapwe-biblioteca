@@ -11,31 +11,63 @@ require "../componentes/clases/reserva.php";
 require "../componentes/clases/cliente.php";
 
 
+// DESPLEGABLES FORMULARIOS
 
-// LISTADO RESERVAS
+function SelectLibros($conexion)
+{
+    $consulta = "SELECT Libros.id, Libros.titulo, Autores.autor, Reservas.libro_id, Reservas.activa FROM Libros LEFT JOIN Reservas on Libros.id = Reservas.libro_id 
+            INNER JOIN Autores ON Libros.autor_id = Autores.id WHERE Reservas.id IS NULL OR Reservas.activa = 0";
+    $sentencia = $conexion->prepare($consulta);
+    $sentencia->execute();
+    $resultado = $sentencia->get_result();
+    while ($fila = $resultado->fetch_assoc()) {
+        echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['titulo'] . " (" . $fila['autor'] . ")" . "</option>";
+    }
+}
+
+function SelectPeliculas($conexion)
+{
+    $consulta = "SELECT Peliculas.id, Peliculas.titulo, Peliculas.director, Reservas.pelicula_id, Reservas.activa FROM Peliculas LEFT JOIN Reservas on Peliculas.id = Reservas.pelicula_id WHERE Reservas.id IS NULL OR Reservas.activa = 0";
+    $sentencia = $conexion->prepare($consulta);
+    $sentencia->execute();
+    $resultado = $sentencia->get_result();
+    while ($fila = $resultado->fetch_assoc()) {
+        echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['titulo'] . " (" . $fila['director'] . ")" . "</option>";
+    }
+}
+
+function SelectClientes($conexion)
+{
+    $consulta = "SELECT id, nombre, apellidos from Clientes";
+    $sentencia = $conexion->prepare($consulta);
+    $sentencia->execute();
+    $resultado = $sentencia->get_result();
+    while ($fila = $resultado->fetch_assoc()) {
+        echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['nombre'] . " " . $fila['apellidos'] . "</option>";
+    }
+}
+
+function SelectClientesConReserva($conexion)
+{
+    $consulta = "SELECT Clientes.id, Clientes.nombre, Clientes.apellidos FROM Clientes INNER JOIN Reservas ON Clientes.id = Reservas.cliente_id GROUP BY Clientes.id";
+    $sentencia = $conexion->prepare($consulta);
+    $sentencia->execute();
+    $resultado = $sentencia->get_result();
+    while ($fila = $resultado->fetch_assoc()) {
+        echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['nombre'] . " " . $fila['apellidos'] . "</option>";
+    }
+}
+
+
+// LISTADO TABLA RESERVAS
+
 $filtroReservas = "";
-$filtrarPorNombre = false;
-$filtrarPorApellidos = false;
 
+if (!empty($_POST['filtrar']) && !empty($_POST['id_cliente_filtro'])) {
 
-if (!empty($_POST['filtrar_reservas'])) {
+    $id_cliente_Filtro = $_POST['id_cliente_filtro'];
 
-    if (!empty($_POST['filtro_reservas_nombre_cliente'])) {
-        $filtrarPorNombre = true;
-        $nombre_para_filtrar = $_POST['filtro_reservas_nombre_cliente'];
-    }
-    if (!empty($_POST['filtro_reservas_apellidos_cliente'])) {
-        $filtrarPorApellidos = true;
-        $apellidos_para_filtrar = $_POST['filtro_reservas_apellidos_cliente'];
-    }
-
-    if ($filtrarPorNombre && $filtrarPorApellidos) {
-        $filtroReservas = " WHERE Clientes.nombre LIKE '%$nombre_para_filtrar%' AND Clientes.apellidos LIKE '%$apellidos_para_filtrar%' ";
-    } else if ($filtrarPorNombre) {
-        $filtroReservas = " WHERE Clientes.nombre LIKE '%$nombre_para_filtrar%' ";
-    } else if ($filtrarPorApellidos) {
-        $filtroReservas = " WHERE Clientes.apellidos LIKE '%$apellidos_para_filtrar%' ";
-    }
+    $filtroReservas = " WHERE Clientes.id = $id_cliente_Filtro";
 }
 
 $consulta = "SELECT Reservas.*, Libros.titulo as titulo_libro, Peliculas.titulo as titulo_pelicula,
@@ -47,138 +79,58 @@ $consulta = "SELECT Reservas.*, Libros.titulo as titulo_libro, Peliculas.titulo 
     ";
 $consulta .= $filtroReservas;
 $consulta .= " ORDER BY Fecha DESC, id DESC";
-
 $resultado = $conexion->query($consulta);
-
 $reservas = [];
 
-while (true) {
-    $reserva = $resultado->fetch_object(Reserva::class);
-
-    if ($reserva == null) {
-        break;
-    }
-
+while ($reserva = $resultado->fetch_object(Reserva::class)) {
     $reservas[] = $reserva;
 }
 
-
 // RESERVAR
-$libro_id = null;
-$pelicula_id = null;
 
+if (
+    (
+        (!empty($_POST["reservar_libro"]) && !empty($_POST["id_libro"]))
+        or
+        (!empty($_POST["reservar_pelicula"]) && !empty($_POST["id_pelicula"]))
+    )
+    &&
+    !empty($_POST["cliente"])
+) {
 
+    // PODRÍAN ESCOGER EN LOS DOS SELECT ANTES DE ENVIAR LA RESERVA, ASÍ QUE RESETEO LA ID A ""
+    if (!empty($_POST["reservar_libro"])) {
+        $libro_id = $_POST["id_libro"];
+        $pelicula_id = NULL;
+    } else if (!empty($_POST["reservar_pelicula"])) {
+        $pelicula_id = $_POST["id_pelicula"];
+        $libro_id = NULL;
+    }
 
-
-
-
-
-
-function EfectuarReserva($conexion, $libro_id, $pelicula_id, $cliente_id)
-{
+    $cliente = $_POST["cliente"];
     $fecha = date("Y-m-d");
 
     $consulta = "INSERT INTO Reservas (cliente_id, libro_id, pelicula_id, fecha) VALUES(?,?,?,?)";
-
     $sentencia = $conexion->prepare($consulta);
-
-    $sentencia->bind_param("iiis", $cliente_id, $libro_id, $pelicula_id, $fecha);
+    $sentencia->bind_param("iiis", $cliente, $libro_id, $pelicula_id, $fecha);
     $sentencia->execute();
 
-    // INTENTANDO EVITAR QUE SE VUELVAN A CREAR RESERVAS SALTANDO TODA LA LÓGICA
-    header("Location: reservas.php");
+    header("Location: reservas.php?reserva_realizada");
     exit();
 }
 
-
-
-if (
-    ((!empty($_POST["reservar_libro"])) || (!empty($_POST["reservar_pelicula"])))
-    && !empty($_POST["id_cliente"]) 
-) {
-    echo "Vamos a reservar algo !!!!!!!!!!!!";
-
-    if (($_POST["tipo_reserva"] == 'libro')) {
-        $libro = ObtenerLibro($conexion, $_POST["titulo"]);
-        if ($libro !== null && $libro !== false) {
-
-            $libroEncontrado = true;
-
-            if (ComprobarReservaLibro($conexion, $libro["id"]) > 0) {
-                $libroYaReservado = true;
-                header("Location: reservas.php?libro_ya_reservado");
-                exit();
-            } else {
-                echo "el libro no esta reservado<br>";
-                $libro_id = $libro["id"];
-                $libroYaReservado = false;
-            }
-        } else {
-            $libroEncontrado = false;
-            header("Location: reservas.php?libro_no_encontrado");
-            exit();
-        }
-    } else {
-        $pelicula = ObtenerPelicula($conexion, $_POST["titulo"]);
-        if ($pelicula !== null && $pelicula !== false) {
-
-            $peliculaEncontrada = true;
-
-            if (ComprobarReservaPelicula($conexion, $pelicula["id"]) > 0) {
-                $peliculaYaReservada = true;
-                header("Location: reservas.php?pelicula_ya_reservada");
-                exit();
-            } else {
-                $pelicula_id = $pelicula["id"];
-                $peliculaYaReservada = false;
-            }
-        } else {
-            $peliculaEncontrada = false;
-            header("Location: reservas.php?pelicula_no_encontrada");
-            exit();
-        }
-    }
-
-    $cliente = ObtenerCliente($conexion, $_POST["nombre_cliente"], $_POST["apellidos_cliente"]);
-    if ($cliente !== null && $cliente !== false) {
-        $clienteEncontrado = true;
-        $cliente_id = $cliente["id"];
-    } else {
-        $clienteEncontrado = false;
-        header("Location: reservas.php?cliente_no_encontrado");
-        exit();
-    }
-
-
-
-    if (
-        (($libroEncontrado && !$libroYaReservado) || ($peliculaEncontrada && !$peliculaYaReservada))
-        && ($clienteEncontrado)
-    ) {
-        echo "preparados para efectuar reserva<br>";
-        EfectuarReserva($conexion, $libro_id, $pelicula_id, $cliente_id);
-    }
-}
 
 // DEVOLVER
 
-function CancelarReserva($conexion, $id_reserva)
-{
+if (!empty($_POST['cancelar'])) {
 
     $consulta = "UPDATE Reservas SET activa = 0 WHERE Reservas.id = ?";
-
-
     $sentencia = $conexion->prepare($consulta);
-
-    $sentencia->bind_param("i", $id_reserva);
+    $sentencia->bind_param("i", $_POST['id_reserva_a_cancelar']);
     $sentencia->execute();
 
-    header("Location: reservas.php");
+    header("Location: reservas.php?devolucion_realizada");
     exit();
-}
-
-if (!empty($_POST['devolver'])) {
-    CancelarReserva($conexion, $_POST['id_reserva_a_cancelar']);
 }
 
 
@@ -189,11 +141,8 @@ if (!empty($_POST['devolver'])) {
 
 
 <div class="mensajeResultado">
-    <?= (isset($_GET["libro_no_encontrado"])) ? "<br><span class='textoError'>Libro no encontrado</span><br><br>" : '' ?>
-    <?= (isset($_GET["libro_ya_reservado"])) ? "<br><span class='textoError'>Libro ya reservado</span><br><br>" : '' ?>
-    <?= (isset($_GET["pelicula_no_encontrada"])) ? "<br><span class='textoError'>Película no encontrada</span><br><br>" : '' ?>
-    <?= (isset($_GET["pelicula_ya_reservada"])) ? "<br><span class='textoError'>Película ya reservada</span><br><br>" : '' ?>
-    <?= (isset($_GET["cliente_no_encontrado"])) ? "<br><span class='textoError'>Cliente no encontrado</span><br><br>" : '' ?>
+    <?= (isset($_GET["reserva_realizada"])) ? "<br><span class='textoExito'>Reserva realizada.</span><br><br>" : '' ?>
+    <?= (isset($_GET["devolucion_realizada"])) ? "<br><span class='textoExito'>Devolución realizada.</span><br><br>" : '' ?>
 </div>
 
 <form action="reservas.php" method="POST" class="form_horizontal">
@@ -201,32 +150,19 @@ if (!empty($_POST['devolver'])) {
         <legend>
             <h4>Reservar libro </h4>
         </legend>
-        <select name="titulo_libro" class="select_titulos">
+        <select name="id_libro" class="select_titulos">
             <option value="" disabled selected>Escoger libro</option>
             <?php
-            $consulta = "SELECT Libros.id, Libros.titulo, Autores.autor, Reservas.libro_id, Reservas.activa FROM Libros LEFT JOIN Reservas on Libros.id = Reservas.libro_id 
-            INNER JOIN Autores ON Libros.autor_id = Autores.id WHERE Reservas.id IS NULL OR Reservas.activa = 0";
-            $sentencia = $conexion->prepare($consulta);
-            $sentencia->execute();
-            $resultado = $sentencia->get_result();
-            while ($fila = $resultado->fetch_assoc()) {
-                echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['titulo'] . " (" .$fila['autor'] .")" . "</option>";
-            }
+            SelectLibros($conexion);
             ?>
         </select>
         <select name="cliente">
             <option value="" disabled selected>Escoger cliente</option>
             <?php
-            $consulta = "SELECT id, nombre, apellidos from Clientes";
-            $sentencia = $conexion->prepare($consulta);
-            $sentencia->execute();
-            $resultado = $sentencia->get_result();
-            while ($fila = $resultado->fetch_assoc()) {
-                echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['nombre'] . " " .$fila['apellidos'] . "</option>";
-            }
+            SelectClientes($conexion);
             ?>
-        </select> 
-        <input type="submit" name="reservar" value="Reservar" class="formButton">
+        </select>
+        <input type="submit" name="reservar_libro" value="Reservar" class="formButton">
     </fieldset>
 </form>
 
@@ -235,31 +171,19 @@ if (!empty($_POST['devolver'])) {
         <legend>
             <h4>Reservar película</h4>
         </legend>
-        <select name="titulo_pelicula" class="select_titulos">
+        <select name="id_pelicula" class="select_titulos">
             <option value="" disabled selected>Escoger película</option>
             <?php
-            $consulta = "SELECT Peliculas.id, Peliculas.titulo, Peliculas.director, Reservas.pelicula_id, Reservas.activa FROM Peliculas LEFT JOIN Reservas on Peliculas.id = Reservas.pelicula_id WHERE Reservas.id IS NULL OR Reservas.activa = 0";
-            $sentencia = $conexion->prepare($consulta);
-            $sentencia->execute();
-            $resultado = $sentencia->get_result();
-            while ($fila = $resultado->fetch_assoc()) {
-                echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['titulo'] . " (" .$fila['director'] .")" . "</option>";
-            }
+            SelectPeliculas($conexion);
             ?>
-        </select>        
+        </select>
         <select name="cliente">
             <option value="" disabled selected>Escoger cliente</option>
             <?php
-            $consulta = "SELECT id, nombre, apellidos from Clientes";
-            $sentencia = $conexion->prepare($consulta);
-            $sentencia->execute();
-            $resultado = $sentencia->get_result();
-            while ($fila = $resultado->fetch_assoc()) {
-                echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['nombre'] . " " .$fila['apellidos'] . "</option>";
-            }
+            SelectClientes($conexion);
             ?>
-        </select> 
-        <input type="submit" name="reservar" value="Reservar" class="formButton">
+        </select>
+        <input type="submit" name="reservar_pelicula" value="Reservar" class="formButton">
     </fieldset>
 </form>
 
@@ -268,19 +192,13 @@ if (!empty($_POST['devolver'])) {
         <legend>
             <h4>Filtrar reservas por cliente</h4>
         </legend>
-        <select name="filtro_cliente">
+        <select name="id_cliente_filtro">
             <option value="" disabled selected>Escoger cliente</option>
             <?php
-            $consulta = "SELECT Clientes.id, Clientes.nombre, Clientes.apellidos FROM Clientes INNER JOIN Reservas ON Clientes.id = Reservas.cliente_id";
-            $sentencia = $conexion->prepare($consulta);
-            $sentencia->execute();
-            $resultado = $sentencia->get_result();
-            while ($fila = $resultado->fetch_assoc()) {
-                echo "<option value='" . $fila['id'] . "'>" . $fila['id'] . " - " . $fila['nombre'] . " " .$fila['apellidos'] . "</option>";
-            }
+            SelectClientesConReserva($conexion);
             ?>
-        </select> 
-        <input type="submit" name="filtrar_reservas" value="Filtrar" class="formButton">
+        </select>
+        <input type="submit" name="filtrar" value="filtrar" class="formButton">
     </fieldset>
 </form>
 
@@ -305,7 +223,7 @@ if (!empty($_POST['devolver'])) {
             <td class="activa">
                 Activa
             </td>
-            <td class="devolver">
+            <td class="cancelar">
                 Devolución
             </td>
         </tr>
@@ -331,10 +249,10 @@ if (!empty($_POST['devolver'])) {
             <td class="activa">
                 <?= ($reserva->activa == 1) ? "Sí" : 'No' ?>
             </td>
-            <td class="devolver">
+            <td class="cancelar">
                 <form action="reservas.php" method="POST">
                     <input type="hidden" name="id_reserva_a_cancelar" value="<?php echo $reserva->id; ?>">
-                    <input type="submit" name="devolver" value="Devolver" class="tableButton">
+                    <input type="submit" name="cancelar" value="Devolver" class="tableButton">
                 </form>
             </td>
         </tr>
