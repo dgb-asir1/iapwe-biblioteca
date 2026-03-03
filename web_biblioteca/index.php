@@ -13,8 +13,6 @@ if (isset($_GET["error"]) && ($_GET["error"] == 1)) {
 
 <body>
     <h1>Biblioteca IAPWE</h1>
-    <br>
-    <h2></h2>
     <form action="componentes/login/comprobar-login.php" method="POST" class="loginForm">
         <fieldset>
             <legend>Introduzca sus credenciales</legend>
@@ -24,8 +22,8 @@ if (isset($_GET["error"]) && ($_GET["error"] == 1)) {
             <br><br>
             <input type="submit" value="Iniciar sesión" class="formButton">
         </fieldset>
-
     </form>
     <?= ($mostrarError) ? '<p class="textoError">Credenciales inválidas</p>' : '' ?>
+</body>
 
-    </html>
+</html>
