@@ -137,6 +137,7 @@ if (!empty($_POST['cancelar'])) {
 ?>
 
 <!-- VISTA -->
+ 
 <?php require('../componentes/header.php') ?>
 
 
