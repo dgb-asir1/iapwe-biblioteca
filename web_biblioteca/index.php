@@ -11,7 +11,7 @@ if (isset($_GET["error"]) && ($_GET["error"] == 1)) {
     <link rel="stylesheet" href="componentes/css/styles.css">
 </head>
 
-<body>
+<body class="centered">
     <h1>Biblioteca IAPWE</h1>
     <form action="componentes/login/comprobar-login.php" method="POST" class="loginForm">
         <fieldset>

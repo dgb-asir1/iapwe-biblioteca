@@ -4,8 +4,13 @@ $usuario = "root";
 $contraseña = "rootmysql";
 $nombre_bbdd = "iapwe-biblioteca-bbdd";
 
-$conexion = new mysqli($servidor, $usuario, $contraseña, $nombre_bbdd);
+try {
+    $conexion = new mysqli($servidor, $usuario, $contraseña, $nombre_bbdd);
+} catch (mysqli_sql_exception $e) {
+    echo "Error en la conexión con la Base de Datos";
+    //$e
+    $conexion = null;
 
-if ($conexion->connect_error) {
-    echo "Error en la conexión: " . $conexion->connect_error;
+    header("Location: ../error-bbdd.php");
+    exit();
 }
