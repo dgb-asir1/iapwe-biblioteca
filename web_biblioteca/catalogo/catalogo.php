@@ -33,8 +33,6 @@ if (!empty($_GET['filtrar_libros'])) {
     }
 }
 
-
-// INNER JOIN Reservas ON Libros.id = Reservas.libro_id
 $consultaLibros = "
     SELECT Libros.*, Autores.autor AS nombre_autor 
     FROM Libros
@@ -52,7 +50,7 @@ while ($libro = $resultado->fetch_object(Libro::class)) {
     $consultaReserva = "SELECT COUNT(*) AS reserva FROM Libros INNER JOIN Reservas ON Libros.id = Reservas.libro_id WHERE Libros.id = {$libro->id}";
     $resultadoConsultaReserva = $conexion->query($consultaReserva);
     $filasResultado = $resultadoConsultaReserva->fetch_assoc();
-    if ($filasResultado["reserva"] === "1") {
+    if ($filasResultado["reserva"] == 1) {
         $libro->reserva = "Sí";
     }
     $libros[] = $libro;
@@ -90,19 +88,20 @@ $resultado = $conexion->query($consultaPeliculas);
 
 $peliculas = [];
 
-while (true) {
-    $pelicula = $resultado->fetch_object(Pelicula::class);
+while ($pelicula = $resultado->fetch_object(Pelicula::class)) {
 
-    if ($pelicula == null) {
-        break;
+    $consultaReserva = "SELECT COUNT(*) AS reserva FROM Peliculas INNER JOIN Reservas ON Peliculas.id = Reservas.pelicula_id WHERE Peliculas.id = {$pelicula->id}";
+    $resultadoConsultaReserva = $conexion->query($consultaReserva);
+    $filasResultado = $resultadoConsultaReserva->fetch_assoc();
+    if ($filasResultado["reserva"] == 1) {
+        $pelicula->reserva = "Sí";
     }
-
     $peliculas[] = $pelicula;
 }
 
 ?>
 
-
+<!-- VISTA -->
 
 <?php require('../componentes/header.php') ?>
 
