@@ -12,6 +12,11 @@ require "../componentes/clases/pelicula.php";
 
 // LISTADO LIBROS
 
+$consultaLibros = "SELECT Libros.*, Autores.autor AS nombre_autor, Reservas.activa as reserva
+    FROM Libros
+    INNER JOIN Autores 
+        ON Libros.autor_id = Autores.id
+    LEFT JOIN Reservas ON Libros.id = Reservas.libro_id";
 $filtroLibros = "";
 
 if (!empty($_GET['filtrar_libros'])) {
@@ -33,32 +38,19 @@ if (!empty($_GET['filtrar_libros'])) {
     }
 }
 
-$consultaLibros = "
-    SELECT Libros.*, Autores.autor AS nombre_autor 
-    FROM Libros
-    INNER JOIN Autores 
-        ON Libros.autor_id = Autores.id
-    
-";
 $consultaLibros .= $filtroLibros;
 $resultado = $conexion->query($consultaLibros);
 
-$libros = [];
-
 while ($libro = $resultado->fetch_object(Libro::class)) {
-
-    $consultaReserva = "SELECT COUNT(*) AS reserva FROM Libros INNER JOIN Reservas ON Libros.id = Reservas.libro_id WHERE Libros.id = {$libro->id}";
-    $resultadoConsultaReserva = $conexion->query($consultaReserva);
-    $filasResultado = $resultadoConsultaReserva->fetch_assoc();
-    if ($filasResultado["reserva"] == 1) {
-        $libro->reserva = "Sí";
-    }
     $libros[] = $libro;
 }
 
 
 // LISTADO PELICULAS
 
+$consultaPeliculas = "SELECT Peliculas.*, Reservas.activa as reserva
+    FROM Peliculas
+    LEFT JOIN Reservas ON Peliculas.id = Reservas.libro_id";
 $filtroPeliculas = "";
 
 if (!empty($_GET['filtrar_peliculas'])) {
@@ -80,22 +72,10 @@ if (!empty($_GET['filtrar_peliculas'])) {
     }
 }
 
-$consultaPeliculas = "
-    SELECT * FROM Peliculas
-";
 $consultaPeliculas .= $filtroPeliculas;
 $resultado = $conexion->query($consultaPeliculas);
 
-$peliculas = [];
-
 while ($pelicula = $resultado->fetch_object(Pelicula::class)) {
-
-    $consultaReserva = "SELECT COUNT(*) AS reserva FROM Peliculas INNER JOIN Reservas ON Peliculas.id = Reservas.pelicula_id WHERE Peliculas.id = {$pelicula->id}";
-    $resultadoConsultaReserva = $conexion->query($consultaReserva);
-    $filasResultado = $resultadoConsultaReserva->fetch_assoc();
-    if ($filasResultado["reserva"] == 1) {
-        $pelicula->reserva = "Sí";
-    }
     $peliculas[] = $pelicula;
 }
 
@@ -161,7 +141,7 @@ while ($pelicula = $resultado->fetch_object(Pelicula::class)) {
                 <?php echo $libro->precio; ?>
             </td>
             <td class="reservado">
-                <?php echo $libro->reserva; ?>
+                <?= ($libro->reserva) == 1 ? "Sí" : "" ?>
             </td>
         </tr>
     <?php endforeach; ?>
@@ -224,7 +204,7 @@ while ($pelicula = $resultado->fetch_object(Pelicula::class)) {
                 <?php echo $pelicula->adaptacion_id; ?>
             </td>
             <td class="reservada">
-                <?php echo $pelicula->reserva; ?>
+                <?= ($pelicula->reserva) == 1 ? "Sí" : "" ?>
             </td>
         </tr>
     <?php endforeach; ?>
