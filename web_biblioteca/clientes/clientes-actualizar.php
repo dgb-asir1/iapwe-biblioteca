@@ -11,11 +11,11 @@ $id = $_POST["id"];
 $nombre = $_POST["nombre"];
 $apellidos = $_POST["apellidos"];
 $fecha_nacimiento = $_POST["fecha_nacimiento"];
-$localisdad = $_POST["localidad"];
+$localidad = $_POST["localidad"];
 
-$consulta = "UPDATE Clientes SET nombre = ? WHERE id = ?";
+$consulta = "UPDATE Clientes SET nombre = ?, apellidos = ?, fecha_nacimiento = ?, localidad = ? WHERE id = ?";
 $sentencia = $conexion->prepare($consulta);
-$sentencia->bind_param("si", $nombre, $id);
+$sentencia->bind_param("ssssi", $nombre, $apellidos, $fecha_nacimiento, $localidad, $id);
 $sentencia->execute();
 
-header("Location: clientes-listado.php");
+header("Location: clientes-listado.php?cliente_actualizado");

@@ -10,25 +10,23 @@ require "../componentes/clases/cliente.php";
 
 $resultado = $conexion->query("SELECT * FROM Clientes");
 
-$clientes = [];
-
-while (true) {
-    $cliente = $resultado->fetch_object(Cliente::class);
-
-    if ($cliente == null) {
-        break;
-    }
-
+while ($cliente = $resultado->fetch_object(Cliente::class)) {
     $clientes[] = $cliente;
 }
 
 ?>
 
-
+<!-- VISTA -->
+ 
+<html>
 
 <?php require('../componentes/header.php') ?>
 
 <br>
+
+<div class="mensajeResultado">
+    <?= (isset($_GET["cliente_actualizado"])) ? "<br><span class='textoExito'>Cliente actualizado.</span><br><br>" : '' ?>
+</div>
 
 <form action="clientes-crear.php" method="GET" class="form_horizontal">
     <fieldset>
@@ -42,7 +40,6 @@ while (true) {
         <input type="submit" name="crear_cliente" value="crear" class="formButton">
     </fieldset>
 </form>
-
 
 <table>
     <thead>
@@ -79,7 +76,7 @@ while (true) {
                 <a href="clientes-editar.php?id=<?php echo $cliente->id ?>" class="tableButton">Editar</a>
             </td>
             <td class="eliminar">
-                <a href="clientes-borrar.php?id=<?php echo $cliente->id ?>" class="tableButton">Eliminar</a>
+                <a href="clientes-eliminar.php?id=<?php echo $cliente->id ?>" class="tableButton">Eliminar</a>
             </td>
         </tr>
     <?php endforeach; ?>

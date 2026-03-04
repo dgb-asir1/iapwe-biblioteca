@@ -14,4 +14,4 @@ $sentencia = $conexion->prepare($consulta);
 $sentencia->bind_param("i", $id);
 $sentencia->execute();
 
-header("Location: clientes-listado.php");
+header("Location: clientes-listado.php?cliente_eliminado");

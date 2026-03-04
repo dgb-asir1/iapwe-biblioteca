@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-if ($_SESSION['usuario_logeado'] == false){
+if ($_SESSION['usuario_logeado'] == false) {
     header("Location: ../index.php");
 }
 
@@ -17,22 +17,32 @@ $cliente = $sentencia->get_result()->fetch_assoc();
 
 ?>
 
+<!-- VISTA -->
+ 
 <html>
 
 <?php require('../componentes/header.php') ?>
 
-<h2>EDITAR CLIENTE</h2>
 <br>
-<form action="clientes-actualizar.php" method="POST">
-    <input type="hidden" name="id" value="<?php echo $cliente["id"]; ?>">
-    <input type="text" name="nombre" value="<?php echo $cliente["nombre"]; ?>">
-    <input type="text" name="apellidos" value="<?php echo $cliente["apellidos"]; ?>">
-    <input type="text" name="fecha_nacimiento" value="<?php echo $cliente["fecha_nacimiento"]; ?>">
-    <input type="text" name="localidad" value="<?php echo $cliente["localidad"]; ?>">
-    <input type="submit" value="Actualizar cliente">
+
+<form action="clientes-actualizar.php" method="POST" class="form_horizontal">
+    <fieldset>
+        <legend>
+            <h4>EDITAR CLIENTE</h4>
+        </legend>
+        <input type="hidden" name="id" value="<?php echo $cliente["id"]; ?>">
+        <label for="nombre">Nombre </label>
+        <input type="text" name="nombre" value="<?php echo $cliente["nombre"]; ?>">
+        <label for="nombre">Apellidos </label>
+        <input type="text" name="apellidos" value="<?php echo $cliente["apellidos"]; ?>">
+        <label for="nombre">Fecha de nacimiento </label>
+        <input type="date" name="fecha_nacimiento" value="<?php echo $cliente["fecha_nacimiento"]; ?>">
+        <label for="nombre">Localidad </label>
+        <input type="text" name="localidad" value="<?php echo $cliente["localidad"]; ?>">
+        <input type="submit" value="Actualizar cliente" class="formButton">
+    </fieldset>
 </form>
-<!-- mensaje error -->
-<a href="../index.php">Volver al login</a>
+
 </body>
 
 </html>

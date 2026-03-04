@@ -83,6 +83,8 @@ while ($pelicula = $resultado->fetch_object(Pelicula::class)) {
 
 <!-- VISTA -->
 
+<html>
+
 <?php require('../componentes/header.php') ?>
 
 <h3>LIBROS</h3>
