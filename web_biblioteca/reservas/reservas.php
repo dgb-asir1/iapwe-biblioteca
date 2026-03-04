@@ -235,32 +235,34 @@ if (!empty($_POST['cancelar'])) {
     <?php foreach ($reservas as $reserva): ?>
         <tr>
             <td class="id">
-                <?= ($reserva->id !== null) ? $reserva->id : '' ?>
+                <?= $reserva->id !== null ? $reserva->id : '' ?>
             </td>
             <td class="titulo">
-                <?= ($reserva->titulo_libro !== null) ? $reserva->titulo_libro : '' ?>
-                <?= ($reserva->titulo_pelicula !== null) ? $reserva->titulo_pelicula : '' ?>
+                <?= $reserva->titulo_libro !== null ? $reserva->titulo_libro : '' ?>
+                <?= $reserva->titulo_pelicula !== null ? $reserva->titulo_pelicula : '' ?>
             </td>
             <td class="tipo">
-                <?= ($reserva->titulo_libro !== null) ? "<img src='../componentes/img/iconos/libro.png'>" : '' ?>
-                <?= ($reserva->titulo_pelicula !== null) ? "<img src='../componentes/img/iconos/pelicula.png'>" : '' ?>
+                <?= $reserva->titulo_libro !== null ? "<img src='../componentes/img/iconos/libro.png'>" : '' ?>
+                <?= $reserva->titulo_pelicula !== null ? "<img src='../componentes/img/iconos/pelicula.png'>" : '' ?>
             </td>            
             <td class="nombre_cliente">
-                <?= ($reserva->nombre_cliente !== null) ? $reserva->nombre_cliente : '' ?>
+                <?= $reserva->nombre_cliente !== null ? $reserva->nombre_cliente : '' ?>
             </td>
             <td class="apellidos_cliente">
-                <?= ($reserva->apellidos_cliente !== null) ? $reserva->apellidos_cliente : '' ?>
+                <?= $reserva->apellidos_cliente !== null ? $reserva->apellidos_cliente : '' ?>
             </td>
             <td class="fecha">
-                <?= ($reserva->fecha !== null) ? $reserva->fecha : '' ?>
+                <?= $reserva->fecha !== null ? $reserva->fecha : '' ?>
             </td>
             <td class="activa">
-                <?= ($reserva->activa == 1) ? "Sí" : 'No' ?>
+                <?= $reserva->activa == 1 ? "Sí" : 'No' ?>
             </td>
             <td class="cancelar">
                 <form action="reservas.php" method="POST">
                     <input type="hidden" name="id_reserva_a_cancelar" value="<?php echo $reserva->id; ?>">
-                    <input type="submit" name="cancelar" value="Devolver" class="tableButton">
+                    <?=   
+                        $reserva->activa == 1 ? '<input type="submit" name="cancelar" value="Devolver" class="tableButton">' : ""
+                    ?>
                 </form>
             </td>
         </tr>
