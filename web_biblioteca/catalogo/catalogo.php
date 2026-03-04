@@ -50,7 +50,7 @@ while ($libro = $resultado->fetch_object(Libro::class)) {
 
 $consultaPeliculas = "SELECT Peliculas.*, Reservas.activa as reserva
     FROM Peliculas
-    LEFT JOIN Reservas ON Peliculas.id = Reservas.libro_id";
+    LEFT JOIN Reservas ON Peliculas.id = Reservas.pelicula_id";
 $filtroPeliculas = "";
 
 if (!empty($_GET['filtrar_peliculas'])) {
