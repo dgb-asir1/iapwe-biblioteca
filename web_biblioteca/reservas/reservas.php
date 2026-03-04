@@ -140,6 +140,7 @@ if (!empty($_POST['cancelar'])) {
  
 <?php require('../componentes/header.php') ?>
 
+<br>
 
 <div class="mensajeResultado">
     <?= (isset($_GET["reserva_realizada"])) ? "<br><span class='textoExito'>Reserva realizada.</span><br><br>" : '' ?>
