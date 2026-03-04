@@ -98,7 +98,7 @@ if (
     !empty($_POST["cliente"])
 ) {
 
-    // PODRÍAN ESCOGER EN LOS DOS SELECT ANTES DE ENVIAR LA RESERVA, ASÍ QUE RESETEO LA ID A ""
+    // PODRÍAN ESCOGER EN LOS DOS SELECT ANTES DE ENVIAR LA RESERVA, ASÍ QUE RESETEO LA ID A NULL DEL QUE NO CORRESPONDE
     if (!empty($_POST["reservar_libro"])) {
         $libro_id = $_POST["id_libro"];
         $pelicula_id = NULL;
