@@ -26,6 +26,7 @@ while ($cliente = $resultado->fetch_object(Cliente::class)) {
 
 <div class="mensajeResultado">
     <?= (isset($_GET["cliente_actualizado"])) ? "<br><span class='textoExito'>Cliente actualizado.</span><br><br>" : '' ?>
+    <?= (isset($_GET["error_eliminando_cliente"])) ? "<br><span class='textoError'>No se pueden eliminar clientes que hayan hecho reservas alguna vez en la vida. Son las normas.</span><br><br>" : '' ?>    
 </div>
 
 <form action="clientes-crear.php" method="GET" class="form_horizontal">
